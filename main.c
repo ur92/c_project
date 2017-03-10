@@ -2,5 +2,5 @@
 
 int main(){
     printf("%s", "sdfsdf");
-    return 0;
+    return 1;
 }
