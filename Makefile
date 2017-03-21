@@ -1,15 +1,20 @@
-# all: assembler
+CC=gcc
+CCFLAGS= -Wall -pedantic -ansi -I.
+LDFLAGS= -Wall -pedantic -ansi -I.
+SOURCES=$(wildcard *.c)
+OBJECTS=$(SOURCES:.c=.o)
+TARGET=main
 
-# %: %.c
-# 	gcc $< -o -pedantic –ansi –Wall $@
+all: $(TARGET)
 
-all: main
+$(TARGET): $(OBJECTS)
+	$(CC) -o $@ $^ $(LDFLAGS) 
 
-CFLAGS = -Wall -pedantic -ansi -I.
-DEPS = some_class.h
+%.o: %.c %.h
+	$(CC) $(CCFLAGS) -c $<
 
-main: $(wildcard *.c)
-	gcc $(CFLAGS) $^ -o $@
-	
+%.o: %.c
+	$(CC) $(CCFLAGS) -c $<
+
 clean:
-	rm *.o *~ *.bak
+	rm -f *.o $(TARGET)
