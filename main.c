@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stbool.h>
+#include "def.h"
 
-#define MEMORY_MAX 1000;
 
 int main(int argc, char **argv) {
 
