@@ -1,0 +1,1 @@
+typedef struck symbol *Symbol;
