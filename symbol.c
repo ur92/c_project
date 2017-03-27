@@ -4,6 +4,7 @@
 struck symbol{
     char *label;
     int address;
+    Symbol next;
 }
 
 Symbol create_symbol(char * label, int address){
@@ -11,7 +12,12 @@ Symbol create_symbol(char * label, int address){
     if(this != null){
         this->label = strdup(label);
         this->address = address;
+        this->next = NULL ;
     }
     
     return this;
+}
+
+Symbol add_symbol(Symbol prev){
+    
 }

@@ -1,5 +1,5 @@
 typedef struct row *Row;
-typedef enum addressing_mode Addressing_mode;
+enum addressingMode {IMMIDIATE, DIRECT, DIRECT_OFFSET,  DIRECT_REGISTER};
 
 Row create_row(
         int address, 

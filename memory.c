@@ -3,9 +3,9 @@
 #include "def.h"
 
 struck memory {
-    Row rows[MEMORY_MAX];
-    Symbol symbols[MEMORY_MAX];
-    Symbol externals[MEMORY_MAX];
-    Symbol enteries[MEMORY_MAX];
+    Row rows_list;
+    Symbol symbols_list;
+    Symbol externals_list;
+    Symbol enteries_list;
 };
 
