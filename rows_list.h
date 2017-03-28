@@ -1,6 +1,6 @@
 #include "row.h"
 
-typedef struck rowsList *RowsList;
+typedef struct rowsList *RowsList;
 
 RowsList create_rows_list();
 

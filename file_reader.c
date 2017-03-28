@@ -4,22 +4,23 @@
 #include <stdbool.h>
 #include <ctype.h>
 #include "def.h"
-#include "row.h"
 #include "rows_list.h"
+#include "file_reader.h"
 
-RowsList readFile(char *filename){
+RowsList read_file(char *filename){
     RowsList list = create_rows_list();
     File *file = fopen(filename, "r");
     if(file){
         char line[LINE_MAX];
     
         while (fgets(line, sizeof(line), file)) {
-            Row row= parse_line(line);
-            if(row){
-                push_row(list, row);
+            Row r= parse_line(line);
+            if(r){
+                push_row(list, r);
             }
         }
         fclose(file);
+        return list;
     }
 }
 

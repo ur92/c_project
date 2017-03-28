@@ -1,1 +1,1 @@
-typedef
+RowsList read_file(char *filename);
