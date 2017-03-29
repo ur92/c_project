@@ -1,6 +1,9 @@
 #include "row.h"
 
-typedef struct rowsList *RowsList;
+typedef struct rowsList{
+    Row head;
+    Row current;
+} *RowsList;
 
 RowsList create_rows_list();
 
