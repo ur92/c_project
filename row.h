@@ -7,7 +7,7 @@
 #include <stdbool.h>
 
 typedef struct row *Row;
-enum addressingMode {IMMIDIATE, DIRECT, DIRECT_OFFSET,  DIRECT_REGISTER};
+
 
 Row create_row(
         int address, 
