@@ -1,1 +1,1 @@
-typedef struck symbol *Symbol;
+typedef struct symbol *Symbol;

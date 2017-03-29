@@ -1,1 +1,2 @@
-typedef memory * Memory;
+
+typedef memory *Memory;

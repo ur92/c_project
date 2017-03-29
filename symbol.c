@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struck symbol{
+struct symbol{
     char *label;
     int address;
     Symbol next;
