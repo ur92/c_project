@@ -5,12 +5,13 @@
 #include <ctype.h>
 #include "def.h"
 #include "file_reader.h"
+#include "rows_list.h"
 #include "parser.h"
 
 int main(int argc, char **argv) {
 
-    /*RowsList rl = */read_file("./ps.as");
-    printf("%s","sdf");
+    RowsList rl = read_file("./ps.as");
+
 
 
     return 0;

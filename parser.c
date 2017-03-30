@@ -77,7 +77,7 @@ Row parse_line(char *line){
     char segments[SEGMENTS_MAX][LINE_MAX];
     Row row;
     
-    /*int number_of_segments = segmentize_line(segments, line);*/
+    int number_of_segments = segmentize_line(segments, line);
     
     if(strlen(segments[0]) > 0){
         if(strchr(segments[0], LABEL_CHAR)){
