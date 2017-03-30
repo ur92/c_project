@@ -9,7 +9,9 @@
 
 int main(int argc, char **argv) {
 
-    RowsList rl = read_file("./ps.as");
+    /*RowsList rl = */read_file("./ps.as");
+    printf("%s","sdf");
+
 
     return 0;
 }
