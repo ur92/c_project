@@ -12,7 +12,7 @@ int main(int argc, char **argv) {
 
     RowsList rl = read_file("./ps.as");
 
-
+    printf("Sdfsd");
 
     return 0;
 }

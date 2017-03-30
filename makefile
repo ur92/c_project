@@ -1,6 +1,6 @@
 CC=gcc
 CCFLAGS= -Wall -pedantic -ansi -I. -g3
-LDFLAGS= -Wall -pedantic -ansi -I.
+LDFLAGS= -Wall -pedantic -ansi -I. -g3
 SOURCES=$(wildcard *.c)
 OBJECTS=$(SOURCES:.c=.o)
 TARGET=main
