@@ -83,22 +83,29 @@ int segmentize_line(char segments[SEGMENTS_MAX][LINE_MAX], char *line) {
 }
 
 Row parse_line(char *line) {
-	bool with_label = false;
+	bool is_labeled, is_command;
 	char segments[SEGMENTS_MAX][LINE_MAX];
 	Row row;
 
 	int number_of_segments = segmentize_line(segments, line);
+	is_labeled = is_labeled(segments);
+	is_command = is_command(segments);
 
-	if (strlen(segments[0]) > 0) {
-		if (strchr(segments[0], LABEL_CHAR)) {
-			with_label = true;
-		}
-	}
+
 
 	row = create_row(0, with_label, false, false, false, IMMIDIATE, "asd",
 			IMMIDIATE, "asdd", "comm", "label", 0);
 
 	return row;
 
+}
+
+bool is_labeled(char segments[SEGMENTS_MAX][LINE_MAX]) {
+	if (strlen(segments[0]) > 0) {
+		if (strchr(segments[0], LABEL_CHAR)) {
+			return true;
+		}
+	}
+	return false;
 }
 

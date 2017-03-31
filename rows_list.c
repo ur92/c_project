@@ -7,7 +7,7 @@
 
 
 
-RowsList create_rows_list(){
+RowsList init_rows_list(){
     RowsList this= (RowsList)malloc(sizeof(struct rowsList));
     this->head = this->current = NULL;
     return this;

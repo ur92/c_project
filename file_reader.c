@@ -5,20 +5,19 @@
 
 
 RowsList read_file(char *path){
-    RowsList list = create_rows_list();
+
     FILE *file = fopen(path, "r");
+    char lines[MEMORY_MAX][LINE_MAX];
+    char *line;
+    int counter =0;
+
     if(file){
-        char line[LINE_MAX];
-    
         while (fgets(line, sizeof(line), file)) {
-            Row r= parse_line(line);
-            if(r){
-                push_row(list, r);
-            }
+            strncpy(lines[counter], line, LINE_MAX);
         }
         fclose(file);
     }
-    return list;
+    return lines;
 }
 
 

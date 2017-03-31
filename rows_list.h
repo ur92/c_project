@@ -8,7 +8,7 @@ typedef struct rowsList{
     Row current;
 } *RowsList;
 
-RowsList create_rows_list();
+RowsList init_rows_list();
 
 Row insert_row(RowsList list, Row prev, Row new_row);
 

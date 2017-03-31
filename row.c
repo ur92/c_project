@@ -14,6 +14,7 @@ Row create_row(int address, bool is_label, bool absolute, bool relative,
 	if (this) {
 		this->address = address;
 		this->is_label = is_label;
+		this->label = str_dup(op1_value);
 		this->absolute = absolute;
 		this->relative = relative;
 		this->external = external;
@@ -22,7 +23,6 @@ Row create_row(int address, bool is_label, bool absolute, bool relative,
 		this->op2_add = op2_add;
 		this->op2_value = str_dup(op1_value);
 		this->command = str_dup(op1_value);
-		this->label = str_dup(op1_value);
 		this->binary = binary;
 		this->next = NULL;
 	}
