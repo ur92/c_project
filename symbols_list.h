@@ -3,9 +3,9 @@
 
 #include "symbol.h"
 
-typedef struct symbolsList{
+typedef struct symbolsList {
 	Symbol head;
 	Symbol current;
-}* SymbolsList;
+} *SymbolsList;
 
 #endif
