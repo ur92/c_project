@@ -4,20 +4,23 @@
 #include "parser.h"
 
 
-RowsList read_file(char *path){
+int read_file(char lines[MEMORY_MAX][LINE_MAX], char *path){
 
     FILE *file = fopen(path, "r");
-    char lines[MEMORY_MAX][LINE_MAX];
     char *line;
-    int counter =0;
+    int counter =-1;
 
     if(file){
         while (fgets(line, sizeof(line), file)) {
+        	counter++;
             strncpy(lines[counter], line, LINE_MAX);
         }
         fclose(file);
     }
-    return lines;
+    else{
+    	/*file error*/
+    }
+    return counter;
 }
 
 

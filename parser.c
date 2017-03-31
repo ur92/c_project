@@ -6,6 +6,9 @@
 #include "def.h"
 #include "row.h"
 #include "parser.h"
+#include "symbol_list.h"
+#include "helper.h"
+#include "symbol.h"
 
 int segmentize_line(char segments[SEGMENTS_MAX][LINE_MAX], char *line) {
 	/*char segments[SEGMENTS_MAX][LINE_MAX];*/
@@ -82,24 +85,67 @@ int segmentize_line(char segments[SEGMENTS_MAX][LINE_MAX], char *line) {
 	return segment;
 }
 
-Row parse_line(char *line) {
+void parse_lines(Memory mem, char lines[MEMORY_MAX][LINE_MAX],
+		int number_of_lines) {
+	int line_number;
+
+	for (line_number = 0; line_number < number_of_lines; line_number++) {
+		Row row = parse_line(mem, lines[line_number], line_number);
+
+		if (row->is_command) {
+			//add to comm lisd
+		} else {
+			//add to data list
+		}
+
+		if (row->is_labeled) {
+			// push symbol
+
+		}
+	}
+}
+
+Row parse_line(char *line, int line_number) {
 	bool is_labeled, is_command;
-	char segments[SEGMENTS_MAX][LINE_MAX];
+	char segments[SEGMENTS_MAX][LINE_MAX], char operands[OPERANDS_MAX];
+	int number_of_segments, row_length;
 	Row row;
 
-	int number_of_segments = segmentize_line(segments, line);
+	number_of_segments = segmentize_line(segments, line);
 	is_labeled = is_labeled(segments);
 	is_command = is_command(segments);
 
-	if(is_command){
-		// parse operands
+	if (is_labeled) {
+
 	}
 
-	row = create_row(0, with_label, false, false, false, IMMIDIATE, "asd",
-			IMMIDIATE, "asdd", "comm", "label", 0);
+	if (is_command) {
+		// parse operands
 
-	return row;
+		AddressingMode
+		am =
+		// calc length
+				row_length = find_row_length
+	}
 
+row = create_row(line_number,)
+
+return row;
+
+}
+
+int split_operands(char splitted[OPERANDS_MAX][LINE_MAX], char *segment) {
+	char *token, *string, *tofree;
+	int counter = 0;
+	tofree = string = strdup(segment);
+
+	while ((token = strsep(&string, ",")) != NULL) {
+		strcpy(splitted[counter], token);
+		counter++;
+	}
+
+	free(tofree);
+	return counter;
 }
 
 bool is_labeled(char segments[SEGMENTS_MAX][LINE_MAX]) {
@@ -109,5 +155,26 @@ bool is_labeled(char segments[SEGMENTS_MAX][LINE_MAX]) {
 		}
 	}
 	return false;
+}
+
+bool is_command(char segments[SEGMENTS_MAX][LINE_MAX], bool is_labeled) {
+	int command_segment = is_labeled ? 1 : 0;
+	int i;
+
+	char commands[COMMANDS_COUNTER][COMMAND_MAX_LENGTH] = { "mov", "cmp", "add",
+			"sub", "not", "clr", "lea", "inc", "dec", "jmp", "bne", "red",
+			"prn", "jsr", "rts", "stop" };
+
+	for (i = 0; i < COMMANDS_COUNTER; i++) {
+		if (!striccmp(segments[command_segment], commands[i]))
+			return true;
+	}
+
+	return false;
+}
+
+int find_row_length(char segments[SEGMENTS_MAX][LINE_MAX], bool is_labeled) {
+	int operand_segment = is_labeled ? 2 : 1;
+
 }
 

@@ -8,7 +8,11 @@ typedef struct memory {
 	RowsList c_list;
 	RowsList d_list;
 	SymbolsList s_list;
-}* Memory;
+	int ic;
+	int dc;
+} *Memory;
+
+Memory init_memory();
 
 
 #endif

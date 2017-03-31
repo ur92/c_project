@@ -5,15 +5,17 @@
 #include "row.h"
 #include "helper.h"
 
-Row create_row(int address, bool is_label, bool absolute, bool relative,
-		bool external, AddressingMode op1_add, char *op1_value,
+Row create_row(int line_number, int length, int address, bool is_labeled, bool is_command, bool absolute,
+		bool relative, bool external, AddressingMode op1_add, char *op1_value,
 		AddressingMode op2_add, char *op2_value, char *command, char *label,
-		int binary) {
-
+		int binary, char *segments) {
+	int i;
 	Row this = (Row) malloc(sizeof(struct row));
 	if (this) {
+		this->line_number = line_number;
+		this->length = length;
 		this->address = address;
-		this->is_label = is_label;
+		this->is_labeled = is_labeled;
 		this->label = str_dup(op1_value);
 		this->absolute = absolute;
 		this->relative = relative;
@@ -24,7 +26,10 @@ Row create_row(int address, bool is_label, bool absolute, bool relative,
 		this->op2_value = str_dup(op1_value);
 		this->command = str_dup(op1_value);
 		this->binary = binary;
+		this->segments = segments;
+
 		this->next = NULL;
+
 	}
 
 	return this;

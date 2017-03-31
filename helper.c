@@ -8,3 +8,12 @@ char * str_dup(char *source){
 
     return dest;
 }
+
+int strcicmp(char const *a, char const *b)
+{
+    for (;; a++, b++) {
+        int d = tolower(*a) - tolower(*b);
+        if (d != 0 || !*a)
+            return d;
+    }
+}

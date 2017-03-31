@@ -3,6 +3,6 @@
 
 #include "rows_list.h"
 
-RowsList read_file(char *path);
+void read_file(char lines[MEMORY_MAX][LINE_MAX], char *path);
 
 #endif

@@ -12,15 +12,20 @@
 
 int main(int argc, char **argv) {
 
+	int i;
 	/*handle each input file*/
-	for(int i=0; i< argc; i++){
-		Memory mem = memory_init();
+	for (i = 0; i < argc; i++) {
+		Memory mem = init_memory();
 
-		char lines[MEMORY_MAX][LINE_MAX]= read_file("./ps.as");
+		char lines[MEMORY_MAX][LINE_MAX];
+		int number_of_lines = read_file(lines, "./ps.as");
+		if (number_of_lines > -1) {
+			parse_lines(mem, lines, number_of_lines);
+		}
 
 	}
 
-    printf("Sdfsd");
+	printf("Sdfsd");
 
-    return 0;
+	return 0;
 }

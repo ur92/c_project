@@ -1,4 +1,5 @@
-
+#ifndef SYMBOL_H
+#define SYMBOL_H
 
 typedef struct symbol{
     char *label;
@@ -6,4 +7,7 @@ typedef struct symbol{
     struct symbol *next;
 } *Symbol;
 
-Symbol create_symbol(char * label, int address)
+Symbol create_symbol(char * label, int address);
+
+
+#endif
