@@ -8,14 +8,14 @@
 #include "rows_list.h"
 #include "symbols_list.h"
 #include "parser.h"
+#include "memory.h"
 
 int main(int argc, char **argv) {
 
 	/*handle each input file*/
 	for(int i=0; i< argc; i++){
-		RowsList c_list = init_rows_list();
-		RowsList m_list = init_rows_list();
-		SymbolsList s_list = init_symbols_list();
+		Memory mem = memory_init();
+
 		char lines[MEMORY_MAX][LINE_MAX]= read_file("./ps.as");
 
 	}

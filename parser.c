@@ -91,7 +91,9 @@ Row parse_line(char *line) {
 	is_labeled = is_labeled(segments);
 	is_command = is_command(segments);
 
-
+	if(is_command){
+		// parse operands
+	}
 
 	row = create_row(0, with_label, false, false, false, IMMIDIATE, "asd",
 			IMMIDIATE, "asdd", "comm", "label", 0);
