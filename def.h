@@ -8,8 +8,14 @@
 #define COMMANDS_COUNTER 16
 #define COMMAND_MAX_LENGTH 5
 #define OPERANDS_MAX 2
+#define REGISTERS_MAX 8
+
 #define COMMENT_CHAR ';'
 #define LABEL_CHAR ':'
+
+#define DIRECT_OFFSET_START_CHAR '['
+#define DIRECT_OFFSET_END_CHAR ']'
+#define IMMIDIATE_CHAR '#'
 
 
 

@@ -3,6 +3,7 @@
 
 #include "row.h"
 
+
 typedef struct rowsList{
     Row head;
     Row current;

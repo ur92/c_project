@@ -106,31 +106,36 @@ void parse_lines(Memory mem, char lines[MEMORY_MAX][LINE_MAX],
 }
 
 Row parse_line(char *line, int line_number) {
-	bool is_labeled, is_command;
-	char segments[SEGMENTS_MAX][LINE_MAX], char operands[OPERANDS_MAX];
-	int number_of_segments, row_length;
+	bool is_labeled, is_command, command_segment;
+	char segments[SEGMENTS_MAX][LINE_MAX], operands[OPERANDS_MAX];
+	int i, number_of_segments, number_of_operands, row_length;
 	Row row;
+	AddressingMode operands_am[OPERANDS_MAX];
 
 	number_of_segments = segmentize_line(segments, line);
+
 	is_labeled = is_labeled(segments);
-	is_command = is_command(segments);
+	is_command = is_command(segments[is_labeled ? 1 : 0]);
 
 	if (is_labeled) {
 
 	}
 
 	if (is_command) {
-		// parse operands
+		/* parse operands */
+		number_of_operands = split_operands(operands,
+				segments[is_labeled ? 2 : 1]);
+		for (i = 0; i < number_of_operands; i++) {
+			operands_am[i] = get_addressing_mode(operands[i]);
+		}
 
-		AddressingMode
-		am =
-		// calc length
-				row_length = find_row_length
+		/* calc row/command length */
+		row_length = get_row_length(operands_am);
 	}
 
-row = create_row(line_number,)
+/*row = create_row(line_number,row_length, 0,is_labeled, is_command, )*/
 
-return row;
+return NULL;
 
 }
 
@@ -154,22 +159,6 @@ bool is_labeled(char segments[SEGMENTS_MAX][LINE_MAX]) {
 			return true;
 		}
 	}
-	return false;
-}
-
-bool is_command(char segments[SEGMENTS_MAX][LINE_MAX], bool is_labeled) {
-	int command_segment = is_labeled ? 1 : 0;
-	int i;
-
-	char commands[COMMANDS_COUNTER][COMMAND_MAX_LENGTH] = { "mov", "cmp", "add",
-			"sub", "not", "clr", "lea", "inc", "dec", "jmp", "bne", "red",
-			"prn", "jsr", "rts", "stop" };
-
-	for (i = 0; i < COMMANDS_COUNTER; i++) {
-		if (!striccmp(segments[command_segment], commands[i]))
-			return true;
-	}
-
 	return false;
 }
 

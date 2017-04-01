@@ -6,10 +6,8 @@
 #include <string.h>
 #include <stdbool.h>
 #include "def.h"
-
-typedef enum addressingMode {
-	IMMIDIATE, DIRECT, DIRECT_OFFSET, DIRECT_REGISTER
-} AddressingMode;
+#include "command.h"
+#include "operand.h"
 
 typedef struct row {
 	int line_number;
@@ -17,13 +15,7 @@ typedef struct row {
 	int address;
 	bool is_labeled;
 	bool is_command;
-	bool absolute;
-	bool relative;
-	bool external;
-	AddressingMode op1_add;
-	char *op1_value;
-	AddressingMode op2_add;
-	char *op2_value;
+	Operand operands[OPERANDS_MAX];
 	char command[5];
 	char *label;
 	int binary;
@@ -32,23 +24,8 @@ typedef struct row {
 	struct row *next;
 }* Row;
 
-Row create_row(
-		int line_number,
-		int length,
-		int address,
-		bool is_labeled,
-		bool is_command,
-		bool absolute,
-		bool relative,
-		bool external,
-		AddressingMode op1_add,
-		char *op1_value,
-		AddressingMode op2_add,
-		char *op2_value,
-		char *command,
-		char *label,
-		int binary,
-		char segments[SEGMENTS_MAX][LINE_MAX]
-);
+Row create_row(int line_number, int length, int address, bool is_labeled,
+		bool is_command, Operand operands[OPERANDS_MAX], char *command,
+		char *label, int binary, char segments[SEGMENTS_MAX][LINE_MAX]);
 
 #endif
