@@ -54,7 +54,7 @@ Command commands[COMMANDS_COUNTER];
 		{ "rts", 0, { 0, 0 } },
 		{ "stop", 0, { 0, 0 } } };*/
 
-bool is_command(char *command_name);
+bool is_row_command(char *command_name);
 Command create_command(int max_operands,
 		AddressingMode possible_addressing_modes[OPERANDS_MAX], char *name);
 Command get_command(char *command_name);

@@ -6,7 +6,7 @@
 #include "helper.h"
 #include "def.h"
 
-bool is_command(char *command_name) {
+bool is_row_command(char *command_name) {
 	return (get_command(command_name) == NULL) ? false : true;
 }
 
@@ -29,7 +29,7 @@ Command get_command(char *command_name) {
 	int i;
 
 	for (i = 0; i < COMMANDS_COUNTER; i++) {
-		if (!striccmp(command_name, commands[i]->name))
+		if (!strcicmp(command_name, commands[i]->name))
 			return commands[i];
 	}
 	return NULL;

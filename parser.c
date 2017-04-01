@@ -10,6 +10,7 @@
 #include "helper.h"
 #include "symbol.h"
 #include "memory.h"
+#include "error.h"
 
 int segmentize_line(char segments[SEGMENTS_MAX][LINE_MAX], char *line) {
 	/*char segments[SEGMENTS_MAX][LINE_MAX];*/
@@ -91,7 +92,7 @@ void parse_lines(Memory mem, char lines[MEMORY_MAX][LINE_MAX],
 	int line_number;
 
 	for (line_number = 0; line_number < number_of_lines; line_number++) {
-		Row row = parse_line(mem, lines[line_number], line_number);
+		Row row = parse_line(lines[line_number], line_number);
 
 		if (row->is_command) {
 			/*add to comm lisd*/
@@ -108,15 +109,16 @@ void parse_lines(Memory mem, char lines[MEMORY_MAX][LINE_MAX],
 
 Row parse_line(char *line, int line_number) {
 	bool is_labeled, is_command, command_segment;
-	char segments[SEGMENTS_MAX][LINE_MAX], operands[OPERANDS_MAX];
+	char segments[SEGMENTS_MAX][LINE_MAX], operands_strings[OPERANDS_MAX][LINE_MAX];
 	int i, number_of_segments, number_of_operands, row_length;
 	Row row;
-	AddressingMode operands_am[OPERANDS_MAX];
+	AddressingMode address_mode;
+	Operand operands[OPERANDS_MAX];
 
 	number_of_segments = segmentize_line(segments, line);
 
-	is_labeled = is_labeled(segments);
-	is_command = is_command(segments[is_labeled ? 1 : 0]);
+	is_labeled = is_row_labeled(segments);
+	is_command = is_row_command(segments[is_labeled ? 1 : 0]);
 
 	if (is_labeled) {
 
@@ -124,37 +126,32 @@ Row parse_line(char *line, int line_number) {
 
 	if (is_command) {
 		/* parse operands */
-		number_of_operands = split_operands(operands,
+		number_of_operands = split_operands(operands_strings,
 				segments[is_labeled ? 2 : 1]);
 		for (i = 0; i < number_of_operands; i++) {
-			operands_am[i] = get_addressing_mode(operands[i]);
+			/* get operand addressing mode */
+			address_mode = get_addressing_mode(operands_strings[i]);
+			if (address_mode == -1) {
+				print_error(INVALID_ADDRESSING_MODE, line_number);
+				address_mode = IMMIDIATE;
+			}
+
+			Operand op = create_operand(address_mode, operands_strings[i]);
+			operands[i] = op;
 		}
 
 		/* calc row/command length */
-		row_length = get_row_length(operands_am);
+		row_length = get_row_length(operands);
 	}
 
-/*row = create_row(line_number,row_length, 0,is_labeled, is_command, )*/
+	row = create_row(line_number, row_length, 0, is_labeled, is_command,
+			operands, segments[is_labeled ? 1 : 0],
+			is_labeled ? segments[0] : "", 0, segments);
 
-return NULL;
-
+	return row;
 }
 
-int split_operands(char splitted[OPERANDS_MAX][LINE_MAX], char *segment) {
-	char *token, *string, *tofree;
-	int counter = 0;
-	tofree = string = strdup(segment);
-
-	while ((token = strsep(&string, ",")) != NULL) {
-		strcpy(splitted[counter], token);
-		counter++;
-	}
-
-	free(tofree);
-	return counter;
-}
-
-bool is_labeled(char segments[SEGMENTS_MAX][LINE_MAX]) {
+bool is_row_labeled(char segments[SEGMENTS_MAX][LINE_MAX]) {
 	if (strlen(segments[0]) > 0) {
 		if (strchr(segments[0], LABEL_CHAR)) {
 			return true;

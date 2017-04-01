@@ -8,4 +8,7 @@ typedef struct symbolsList {
 	Symbol current;
 } *SymbolsList;
 
+
+Symbol symbol_search(SymbolsList list, char *label);
+
 #endif

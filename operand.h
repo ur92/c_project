@@ -28,8 +28,9 @@ typedef struct operand {
 	char *value;
 }* Operand;
 
-Operand create_operand(AddressingMode address_mode, int aer, char *value);
+Operand create_operand(AddressingMode address_mode, char *value);
 AddressingMode get_addressing_mode(char *operand);
+int split_operands(char splitted[OPERANDS_MAX][LINE_MAX], char *segment);
 int get_row_length(AddressingMode operands_am[OPERANDS_MAX]);
 
 #endif
