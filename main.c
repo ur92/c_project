@@ -9,9 +9,11 @@
 #include "symbols_list.h"
 #include "parser.h"
 #include "memory.h"
+#include "command.h"
 
 int main(int argc, char **argv) {
 
+	init_commands();
 	int i;
 	/*handle each input file*/
 	for (i = 0; i < argc; i++) {

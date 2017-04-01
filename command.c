@@ -25,6 +25,29 @@ Command create_command(int max_operands,
 	return this;
 }
 
+void init_commands(){
+	AddressingMode pam[OPERANDS_MAX] = { _123, _0123 };
+	/*commands[MOV]= create_command(2,pam,"mov");*/
+	commands[MOV]= { "mov", 2, { _123, _0123 } };
+			/*{
+			{ "mov", 2, { _123, _0123 } },
+			{ "cmp", 2, { _0123, _0123 } },
+			{ "add", 2, { _123, _0123 } },
+			{ "sub", 2, { _123, _0123 } },
+			{ "not", 1, { _123, 0 } },
+			{ "clr", 1, { _123, 0 } },
+			{ "lea", 2, { _123, _12 } },
+			{ "inc", 1, { _123, 0 } },
+			{ "dec", 1, { _123, 0 } },
+			{ "jmp", 1, { _123, 0 } },
+			{ "bne", 1, { _123, 0 } },
+			{"red", 1, { _123, 0 } },
+			{ "prn", 1, { _0123, 0 } },
+			{ "jsr", 1, { _123,0 } },
+			{ "rts", 0, { 0, 0 } },
+			{ "stop", 0, { 0, 0 } } };*/
+}
+
 Command get_command(char *command_name) {
 	int i;
 
