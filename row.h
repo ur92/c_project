@@ -7,7 +7,7 @@
 #include <stdbool.h>
 #include "def.h"
 #include "command.h"
-#include "operand.h"
+/*#include "operand.h"*/
 
 typedef struct row {
 	int line_number;
@@ -15,7 +15,7 @@ typedef struct row {
 	int address;
 	bool is_labeled;
 	bool is_command;
-	Operand operands[OPERANDS_MAX];
+	/*Operand operands[OPERANDS_MAX];*/
 	char command[5];
 	char *label;
 	int binary;
@@ -25,7 +25,7 @@ typedef struct row {
 }* Row;
 
 Row create_row(int line_number, int length, int address, bool is_labeled,
-		bool is_command, Operand operands[OPERANDS_MAX], char *command,
+		bool is_command/*, Operand operands[OPERANDS_MAX]*/, char *command,
 		char *label, int binary, char segments[SEGMENTS_MAX][LINE_MAX]);
 
 #endif

@@ -18,4 +18,3 @@ AddressingMode get_addressing_mode(char *operand) {
 int get_row_length(AddressingMode operands_am[OPERANDS_MAX]) {
 
 }
-

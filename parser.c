@@ -6,9 +6,10 @@
 #include "def.h"
 #include "row.h"
 #include "parser.h"
-#include "symbol_list.h"
+#include "symbols_list.h"
 #include "helper.h"
 #include "symbol.h"
+#include "memory.h"
 
 int segmentize_line(char segments[SEGMENTS_MAX][LINE_MAX], char *line) {
 	/*char segments[SEGMENTS_MAX][LINE_MAX];*/
@@ -93,13 +94,13 @@ void parse_lines(Memory mem, char lines[MEMORY_MAX][LINE_MAX],
 		Row row = parse_line(mem, lines[line_number], line_number);
 
 		if (row->is_command) {
-			//add to comm lisd
+			/*add to comm lisd*/
 		} else {
-			//add to data list
+			/*add to data list*/
 		}
 
 		if (row->is_labeled) {
-			// push symbol
+			/* push symbol*/
 
 		}
 	}
