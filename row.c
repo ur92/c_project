@@ -4,11 +4,12 @@
 #include <string.h>
 #include "row.h"
 #include "helper.h"
+#include "def.h"
 /*#include "operand.h"*/
 
 Row create_row(int line_number, int length, int number_of_operands,
 		RowState row_state, int address, Operand operands[DATA_OPERANDS_MAX],
-		Command command, char *label, int binary,
+		Command command, char *label, char binary[WORD_LENGTH],
 		char segments[SEGMENTS_MAX][LINE_MAX]) {
 	int i;
 	Row this = (Row) malloc(sizeof(struct row));
@@ -22,7 +23,7 @@ Row create_row(int line_number, int length, int number_of_operands,
 		this->command = command;
 		this->label = malloc(strlen(label)+1);
 		strcpy(this->label, label);
-		this->binary = binary;
+		strcpy(this->binary, binary);
 
 		for (i = 0; i < number_of_operands; i++) {
 			this->operands[i] = operands[i];

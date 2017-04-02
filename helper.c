@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include "def.h"
 
 char *strdup(const char *s) {
 	char *d = malloc(strlen(s) + 1);
@@ -11,7 +12,7 @@ char *strdup(const char *s) {
 	return d;
 }
 
-char * strsep(char **stringp, const char *delim){
+char * strsep(char **stringp, const char *delim) {
 	char *s;
 	const char *spanp;
 	int c, sc;
@@ -42,3 +43,21 @@ int strcicmp(char const *a, char const *b) {
 			return d;
 	}
 }
+
+long int binary_to_int(char *binary) {
+	return strtol(binary, NULL, 2);
+}
+
+char *int_to_binary(int a, char *buffer) {
+	int i;
+	buffer += (INT_BUF_SIZE - 2);
+
+	for (i = INT_BUF_SIZE - 2; i >= 0; i--) {
+		*buffer-- = (a & 1) + '0';
+
+		a >>= 1;
+	}
+
+	return buffer;
+}
+

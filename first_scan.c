@@ -91,7 +91,7 @@ int segmentize_line(char segments[SEGMENTS_MAX][LINE_MAX], char *line) {
 
 void first_scan(Memory mem, char lines[MEMORY_MAX][LINE_MAX],
 		int number_of_lines) {
-	int line_number;
+	int line_number, address;
 	Symbol symbol;
 
 	for (line_number = 0; line_number <= number_of_lines; line_number++) {
@@ -107,6 +107,9 @@ void first_scan(Memory mem, char lines[MEMORY_MAX][LINE_MAX],
 						print_error(SYMBOL_ALREADY_EXIST, line_number);
 					}
 				}
+				/*calc ref address*/
+				address = BASE_MEM_ADDRESS + mem->dc;
+				row->address = address;
 				mem->dc += row->length;
 				push_row(mem->d_list, row);
 			}
@@ -134,14 +137,19 @@ void first_scan(Memory mem, char lines[MEMORY_MAX][LINE_MAX],
 						print_error(SYMBOL_ALREADY_EXIST, line_number);
 					}
 				}
+				/*calc the address*/
+				address = BASE_MEM_ADDRESS + mem->ic;
+				row->address = address;
+
 				/*add to commands list*/
 				push_row(mem->c_list, row);
 				mem->ic += row->length;
 			}
 
 		}
-
 	}
+	update_data_symbols_address(mem->s_list, mem->ic);
+	update_data_commands_address(mem->d_list, mem->ic);
 }
 
 Row parse_line(char *line, int line_number) {
@@ -171,7 +179,7 @@ Row parse_line(char *line, int line_number) {
 		command = get_command(row_state,
 				segments[(row_state & IS_LABELED) ? 1 : 0]);
 
-		/*get opernads*/
+		/*get operands*/
 		for (i = 0; i < number_of_operands; i++) {
 			if (row_state & IS_COMMAND) {
 				/* get operand addressing mode */

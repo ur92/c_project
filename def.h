@@ -1,7 +1,9 @@
 #ifndef DEF_H
 #define DEF_H
 
+#define INT_BUF_SIZE 33
 #define BASE_MEM_ADDRESS 100
+#define WORD_LENGTH 16
 #define MEMORY_MAX 1000
 #define LINE_MAX 80
 #define SEGMENTS_MAX 3

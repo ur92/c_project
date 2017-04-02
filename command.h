@@ -38,6 +38,7 @@ typedef enum dataCommandName {
 } DataCommandName;
 
 typedef struct command {
+	int opcode;
 	char name[COMMAND_MAX_LENGTH];
 	int max_operands;
 	AddressingMode possible_addressing_modes[OPERANDS_MAX];
@@ -50,7 +51,7 @@ int is_row_command(char *command_name);
 int is_row_data_command(char *command_name);
 int is_row_ent_ext_command(char *command_name);
 
-Command create_command(int max_operands,
+Command create_command(int opcode, int max_operands,
 		AddressingMode possible_addressing_modes[OPERANDS_MAX], char *name);
 Command get_command(RowState state, char *command_name);
 Command get_i_command(char *command_name);

@@ -4,9 +4,13 @@
 #include <stdio.h>
 #include "row.h"
 
-int serialize_command(Row row);
+char * serialize_command(Row row);
 
-int serialize_data(Row row);
+char * serialize_data(Row row);
+
+void set_unused_bits(char binary[WORD_LENGTH]);
+void set_opcode_bits(char binary[WORD_LENGTH], Row row);
+void set_aer_bits(char binary[WORD_LENGTH],AER aer);
 
 
 #endif

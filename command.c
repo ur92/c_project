@@ -30,12 +30,13 @@ int is_row_ent_ext_command(char *command_name) {
 	return is_ent_ext?IS_ENT_EXT_COMMAND:0;
 }
 
-Command create_command(int max_operands,
+Command create_command(int opcode, int max_operands,
 		AddressingMode possible_addressing_modes[OPERANDS_MAX], char *name) {
 	Command this = malloc(sizeof(struct command));
 	int i;
 
 	if (this) {
+		this->opcode= opcode;
 		this->max_operands = max_operands;
 		for (i = 0; i < OPERANDS_MAX; i++) {
 			this->possible_addressing_modes[i] = possible_addressing_modes[i];
@@ -55,27 +56,27 @@ void init_commands() {
 			{ _123,_12 },
 			{ 0, 0 }
 	};
-	i_commands[MOV] = create_command(2, addresing_modes_pairs[0], "mov");
-	i_commands[CMP] = create_command(2, addresing_modes_pairs[1], "cmp");
-	i_commands[ADD] = create_command(2, addresing_modes_pairs[0], "add");
-	i_commands[SUB] = create_command(2, addresing_modes_pairs[0], "sub");
-	i_commands[NOT] = create_command(1, addresing_modes_pairs[2], "not");
-	i_commands[CLR] = create_command(1, addresing_modes_pairs[2], "clr");
-	i_commands[LEA] = create_command(2, addresing_modes_pairs[4], "lea");
-	i_commands[INC] = create_command(1, addresing_modes_pairs[2], "inc");
-	i_commands[DEC] = create_command(1, addresing_modes_pairs[2], "dec");
-	i_commands[JMP] = create_command(1, addresing_modes_pairs[2], "jmp");
-	i_commands[BNE] = create_command(1, addresing_modes_pairs[2], "bne");
-	i_commands[RED] = create_command(1, addresing_modes_pairs[2], "red");
-	i_commands[PRN] = create_command(1, addresing_modes_pairs[3], "prn");
-	i_commands[JSR] = create_command(1, addresing_modes_pairs[2], "jsr");
-	i_commands[RTS] = create_command(0, addresing_modes_pairs[5], "rts");
-	i_commands[STOP] = create_command(0, addresing_modes_pairs[5], "stop");
+	i_commands[MOV] = create_command(MOV, 2, addresing_modes_pairs[0], "mov");
+	i_commands[CMP] = create_command(CMP, 2, addresing_modes_pairs[1], "cmp");
+	i_commands[ADD] = create_command(ADD, 2, addresing_modes_pairs[0], "add");
+	i_commands[SUB] = create_command(SUB, 2, addresing_modes_pairs[0], "sub");
+	i_commands[NOT] = create_command(NOT, 1, addresing_modes_pairs[2], "not");
+	i_commands[CLR] = create_command(CLR, 1, addresing_modes_pairs[2], "clr");
+	i_commands[LEA] = create_command(LEA, 2, addresing_modes_pairs[4], "lea");
+	i_commands[INC] = create_command(INC, 1, addresing_modes_pairs[2], "inc");
+	i_commands[DEC] = create_command(DEC, 1, addresing_modes_pairs[2], "dec");
+	i_commands[JMP] = create_command(JMP, 1, addresing_modes_pairs[2], "jmp");
+	i_commands[BNE] = create_command(BNE, 1, addresing_modes_pairs[2], "bne");
+	i_commands[RED] = create_command(RED, 1, addresing_modes_pairs[2], "red");
+	i_commands[PRN] = create_command(PRN, 1, addresing_modes_pairs[3], "prn");
+	i_commands[JSR] = create_command(JSR, 1, addresing_modes_pairs[2], "jsr");
+	i_commands[RTS] = create_command(RTS, 0, addresing_modes_pairs[5], "rts");
+	i_commands[STOP] = create_command(STOP, 0, addresing_modes_pairs[5], "stop");
 
-	d_commands[DATA] = create_command(OPERANDS_MAX, addresing_modes_pairs[5], ".data");
-	d_commands[STRING] = create_command(1, addresing_modes_pairs[5], ".string");
-	d_commands[ENTRY] = create_command(1, addresing_modes_pairs[5], ".entry");
-	d_commands[EXTERN] = create_command(1, addresing_modes_pairs[5], ".extern");
+	d_commands[DATA] = create_command(DATA, OPERANDS_MAX, addresing_modes_pairs[5], ".data");
+	d_commands[STRING] = create_command(STRING, 1, addresing_modes_pairs[5], ".string");
+	d_commands[ENTRY] = create_command(ENTRY, 1, addresing_modes_pairs[5], ".entry");
+	d_commands[EXTERN] = create_command(EXTERN, 1, addresing_modes_pairs[5], ".extern");
 }
 
 
@@ -83,7 +84,7 @@ Command get_i_command(char *command_name) {
 	int i;
 
 	for (i = 0; i < I_COMMANDS_COUNTER; i++) {
-		if (!strcicmp(command_name, i_commands[i]->name))
+		if (!strcmp(command_name, i_commands[i]->name))
 			return i_commands[i];
 	}
 	return NULL;
@@ -93,7 +94,7 @@ Command get_d_command(char *command_name) {
 	int i;
 
 	for (i = 0; i < D_COMMANDS_COUNTER; i++) {
-		if (!strcicmp(command_name, d_commands[i]->name))
+		if (!strcmp(command_name, d_commands[i]->name))
 			return d_commands[i];
 	}
 	return NULL;

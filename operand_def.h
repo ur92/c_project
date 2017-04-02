@@ -1,6 +1,7 @@
 #ifndef OPERNAD_DEF_H
 #define OPERNAD_DEF_H
 
+#include "def.h"
 
 #define _12 DIRECT&DIRECT_OFFSET
 #define _123 _12&DIRECT_REGISTER
@@ -21,6 +22,7 @@ typedef struct operand {
 	AddressingMode address_mode;
 	AER aer;
 	char *value;
+	char binary[WORD_LENGTH];
 }* Operand;
 
 
