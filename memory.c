@@ -12,6 +12,7 @@ Memory init_memory(){
 	    this->c_list = init_rows_list();
 	    this->d_list = init_rows_list();
 	    this->s_list = init_symbols_list();
+	    this->es_list = init_symbols_list();
 	    this->ic =0;
 	    this->dc =0;
 

@@ -9,7 +9,7 @@ int read_file(char lines[MEMORY_MAX][LINE_MAX], char *path){
 
     FILE *file = fopen(path, "r");
     char line[LINE_MAX];
-    int counter =-1;
+    int counter =0;
 
     if(file){
         while (fgets(line, sizeof(line), file)) {
@@ -21,6 +21,7 @@ int read_file(char lines[MEMORY_MAX][LINE_MAX], char *path){
     else{
     	/*file error*/
     	print_error(FILE_ERROR,0);
+    	return -1;
     }
     return counter;
 }

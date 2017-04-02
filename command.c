@@ -59,23 +59,23 @@ void init_commands() {
 	i_commands[CMP] = create_command(2, addresing_modes_pairs[1], "cmp");
 	i_commands[ADD] = create_command(2, addresing_modes_pairs[0], "add");
 	i_commands[SUB] = create_command(2, addresing_modes_pairs[0], "sub");
-	i_commands[NOT] = create_command(2, addresing_modes_pairs[2], "not");
-	i_commands[CLR] = create_command(2, addresing_modes_pairs[2], "clr");
+	i_commands[NOT] = create_command(1, addresing_modes_pairs[2], "not");
+	i_commands[CLR] = create_command(1, addresing_modes_pairs[2], "clr");
 	i_commands[LEA] = create_command(2, addresing_modes_pairs[4], "lea");
-	i_commands[INC] = create_command(2, addresing_modes_pairs[2], "inc");
-	i_commands[DEC] = create_command(2, addresing_modes_pairs[2], "dec");
-	i_commands[JMP] = create_command(2, addresing_modes_pairs[2], "jmp");
-	i_commands[BNE] = create_command(2, addresing_modes_pairs[2], "bne");
-	i_commands[RED] = create_command(2, addresing_modes_pairs[2], "red");
-	i_commands[PRN] = create_command(2, addresing_modes_pairs[3], "prn");
-	i_commands[JSR] = create_command(2, addresing_modes_pairs[2], "jsr");
-	i_commands[RTS] = create_command(2, addresing_modes_pairs[5], "rts");
-	i_commands[STOP] = create_command(2, addresing_modes_pairs[5], "stop");
+	i_commands[INC] = create_command(1, addresing_modes_pairs[2], "inc");
+	i_commands[DEC] = create_command(1, addresing_modes_pairs[2], "dec");
+	i_commands[JMP] = create_command(1, addresing_modes_pairs[2], "jmp");
+	i_commands[BNE] = create_command(1, addresing_modes_pairs[2], "bne");
+	i_commands[RED] = create_command(1, addresing_modes_pairs[2], "red");
+	i_commands[PRN] = create_command(1, addresing_modes_pairs[3], "prn");
+	i_commands[JSR] = create_command(1, addresing_modes_pairs[2], "jsr");
+	i_commands[RTS] = create_command(0, addresing_modes_pairs[5], "rts");
+	i_commands[STOP] = create_command(0, addresing_modes_pairs[5], "stop");
 
-	d_commands[DATA] = create_command(0, addresing_modes_pairs[5], ".data");
-	d_commands[STRING] = create_command(0, addresing_modes_pairs[5], ".string");
-	d_commands[ENTRY] = create_command(0, addresing_modes_pairs[5], ".entry");
-	d_commands[EXTERN] = create_command(0, addresing_modes_pairs[5], ".extern");
+	d_commands[DATA] = create_command(OPERANDS_MAX, addresing_modes_pairs[5], ".data");
+	d_commands[STRING] = create_command(1, addresing_modes_pairs[5], ".string");
+	d_commands[ENTRY] = create_command(1, addresing_modes_pairs[5], ".entry");
+	d_commands[EXTERN] = create_command(1, addresing_modes_pairs[5], ".extern");
 }
 
 

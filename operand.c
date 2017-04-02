@@ -40,15 +40,16 @@ AddressingMode get_addressing_mode(char *operand) {
 	return -1;
 }
 
-
 int split_operands(char splitted[DATA_OPERANDS_MAX][LINE_MAX], char *segment) {
 	char *token, *string;
 	int counter = 0;
 	string = strdup(segment);
 
 	while ((token = strsep(&string, ",")) != NULL) {
-		strcpy(splitted[counter], token);
-		counter++;
+		if (strlen(token)) {
+			strcpy(splitted[counter], token);
+			counter++;
+		}
 	}
 
 	return counter;
@@ -56,7 +57,7 @@ int split_operands(char splitted[DATA_OPERANDS_MAX][LINE_MAX], char *segment) {
 
 int get_row_length(RowState state, Command command,
 		Operand operands[OPERANDS_MAX], int number_of_operands) {
-	int counter=0;
+	int counter = 0;
 	if (state & IS_COMMAND) {
 		counter = number_of_operands;
 
@@ -66,13 +67,11 @@ int get_row_length(RowState state, Command command,
 		}
 
 		counter++;
-	}
-	else if(state & IS_DATA_COMMAND){
-		if(command==d_commands[DATA]){
+	} else if (state & IS_DATA_COMMAND) {
+		if (command == d_commands[DATA]) {
 			counter = number_of_operands;
-		}
-		else if(command==d_commands[STRING]){
-			counter = strlen(operands[0]->value)-2;
+		} else if (command == d_commands[STRING]) {
+			counter = strlen(operands[0]->value)+1;
 		}
 	}
 

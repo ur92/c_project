@@ -52,14 +52,14 @@ int segmentize_line(char segments[SEGMENTS_MAX][LINE_MAX], char *line) {
 	segment++;
 
 	/*trim spaces*/
-	while (isspace(line[i]) && i < length)
+	while ((isspace(line[i]) || !isgraph(line[i])) && i < length)
 		i++;
 
 	if (with_label) {
 		/*second segment (command)*/
 		j = 0;
 
-		while (!isspace(line[i]) && i < length) {
+		while ((!isspace(line[i]) && isgraph(line[i])) && i < length) {
 			segments[segment][j] = line[i];
 			i++;
 			j++;
@@ -70,13 +70,13 @@ int segmentize_line(char segments[SEGMENTS_MAX][LINE_MAX], char *line) {
 	}
 
 	/*trim spaces*/
-	while (isspace(line[i]) && i < length)
+	while ((isspace(line[i]) || !isgraph(line[i])) && i < length)
 		i++;
 
 	/*second segment (operands)*/
 	j = 0;
 	while (i < length) {
-		if (!isspace(line[i])) {
+		if (!isspace(line[i]) && isgraph(line[i])) {
 			segments[segment][j] = line[i];
 			j++;
 		}
@@ -95,14 +95,14 @@ void parse_lines(Memory mem, char lines[MEMORY_MAX][LINE_MAX],
 	Symbol symbol;
 	DataCommandName type;
 
-	for (line_number = 0; line_number < number_of_lines; line_number++) {
+	for (line_number = 0; line_number <= number_of_lines; line_number++) {
 		Row row = parse_line(lines[line_number], line_number);
 
 		if (row) {
 			if (row->row_state & IS_DATA_COMMAND) {
 				if (row->row_state & IS_LABELED) {
 					/* push symbol*/
-					symbol = create_symbol(row->label, mem->dc, DATA);
+					symbol = create_symbol(row->label, mem->dc, false, false);
 					if (!push_symbol(mem->s_list, symbol)) {
 						print_error(SYMBOL_ALREADY_EXIST, line_number);
 					}
@@ -114,7 +114,7 @@ void parse_lines(Memory mem, char lines[MEMORY_MAX][LINE_MAX],
 			if (row->row_state & IS_COMMAND) {
 				if (row->row_state & IS_LABELED) {
 					/* push symbol*/
-					symbol = create_symbol(row->label, mem->ic, 0);
+					symbol = create_symbol(row->label, mem->ic, false,true);
 					if (!push_symbol(mem->s_list, symbol)) {
 						print_error(SYMBOL_ALREADY_EXIST, line_number);
 					}
@@ -125,6 +125,11 @@ void parse_lines(Memory mem, char lines[MEMORY_MAX][LINE_MAX],
 			}
 
 			if (row->row_state & IS_ENT_EXT_COMMAND) {
+				if(row->command==d_commands[EXTERN]){
+					/*add the symbol to external symbol list*/
+					symbol = create_symbol(row->operands[0]->value, mem->ic, true, false);
+					push_symbol(mem->es_list,symbol);
+				}
 				continue;
 
 				/*type = (row->command == d_commands[EXTERN]) ? EXTERN : ENTRY;
@@ -147,7 +152,7 @@ Row parse_line(char *line, int line_number) {
 
 	char segments[SEGMENTS_MAX][LINE_MAX],
 			operands_strings[DATA_OPERANDS_MAX][LINE_MAX];
-	int i, number_of_segments, number_of_operands, row_length;
+	int i, number_of_segments, number_of_operands, row_length, address;
 	RowState row_state;
 	Row row;
 	AddressingMode address_mode;

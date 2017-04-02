@@ -1,16 +1,17 @@
 #ifndef SYMBOL_H
 #define SYMBOL_H
-
+#include <stdbool.h>
 #include "command.h"
 
 typedef struct symbol{
     char *label;
     int address;
-    DataCommandName type;
+    bool is_external;
+    bool is_command;
     struct symbol *next;
 } *Symbol;
 
-Symbol create_symbol(char * label, int address, DataCommandName type);
+Symbol create_symbol(char * label, int address, bool is_external, bool is_command);
 
 
 #endif

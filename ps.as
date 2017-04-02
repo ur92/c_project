@@ -1,12 +1,12 @@
-﻿.ENTRY LOOP
-MAIN: INC K
-MOV r5[r2],W
-.EXTERN W
-ADD R2,STR
-LOOP: JMP W
-PRN #-5
-STR: .STRING “ab”
-SUB R1,R4
-STOP
-.ENTRY STR
-K: .DATA 2,7
+﻿MAIN: mov r5[r2],LENGTH
+add r2,STR
+LOOP: jmp END
+prn #-5
+sub r1, r4
+inc K
+mov r7[r6],r3
+bne LOOP
+END: stop
+STR: .string “abcdef”
+LENGTH: .data 6,-9,15
+K: .data 22
