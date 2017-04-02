@@ -6,8 +6,11 @@
 #include <string.h>
 #include <stdbool.h>
 #include "def.h"
-#include "command.h"
+#include "operand_def.h"
 /*#include "operand.h"*/
+#include "command.h"
+
+
 
 typedef enum rowState{
 	IS_LABELED = 1<<0,

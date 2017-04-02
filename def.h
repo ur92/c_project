@@ -9,6 +9,7 @@
 #define D_COMMANDS_COUNTER 4
 #define COMMAND_MAX_LENGTH 8
 #define OPERANDS_MAX 2
+#define DATA_OPERANDS_MAX 2
 #define REGISTERS_MAX 8
 
 #define COMMENT_CHAR ';'

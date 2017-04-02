@@ -2,9 +2,14 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#include "command.h"
+
+#include "row.h"
 #include "helper.h"
 #include "def.h"
+
+#include "command.h"
+
+
 
 int is_row_command(char *command_name) {
 	return (get_i_command(command_name) == NULL) ? 0 : IS_COMMAND;

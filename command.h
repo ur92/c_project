@@ -6,7 +6,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "def.h"
-#include "operand.h"
+
+
 
 typedef enum commandName {
 	MOV=0,
@@ -43,7 +44,7 @@ typedef struct command {
 Command i_commands[I_COMMANDS_COUNTER];
 Command d_commands[D_COMMANDS_COUNTER];
 
-bool is_row_command(char *command_name);
+int is_row_command(char *command_name);
 Command create_command(int max_operands,
 		AddressingMode possible_addressing_modes[OPERANDS_MAX], char *name);
 Command get_i_command(char *command_name);

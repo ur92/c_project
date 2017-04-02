@@ -4,13 +4,14 @@
 #include <stdbool.h>
 #include <ctype.h>
 #include "def.h"
-#include "row.h"
+
 #include "parser.h"
 #include "symbols_list.h"
 #include "helper.h"
 #include "symbol.h"
 #include "memory.h"
 #include "error.h"
+#include "row.h"
 
 int segmentize_line(char segments[SEGMENTS_MAX][LINE_MAX], char *line) {
 	/*char segments[SEGMENTS_MAX][LINE_MAX];*/
@@ -110,12 +111,12 @@ void parse_lines(Memory mem, char lines[MEMORY_MAX][LINE_MAX],
 Row parse_line(char *line, int line_number) {
 
 	char segments[SEGMENTS_MAX][LINE_MAX],
-			operands_strings[OPERANDS_MAX][LINE_MAX];
+			operands_strings[DATA_OPERANDS_MAX][LINE_MAX];
 	int i, number_of_segments, number_of_operands, row_length;
 	RowState row_state;
 	Row row;
 	AddressingMode address_mode;
-	Operand operands[OPERANDS_MAX];
+	Operand operands[DATA_OPERANDS_MAX];
 	Command command;
 
 	number_of_segments = segmentize_line(segments, line);
@@ -134,28 +135,34 @@ Row parse_line(char *line, int line_number) {
 	command = get_command(row_state,
 			segments[(row_state & IS_LABELED) ? 1 : 0]);
 
-	if (row_state & IS_COMMAND) {
-
-		for (i = 0; i < number_of_operands; i++) {
+	/*get opernads*/
+	for (i = 0; i < number_of_operands; i++) {
+		if (row_state & IS_COMMAND) {
 			/* get operand addressing mode */
 			address_mode = get_addressing_mode(operands_strings[i]);
 			if (address_mode == -1) {
 				print_error(INVALID_ADDRESSING_MODE, line_number);
 				address_mode = IMMIDIATE;
 			}
-
-			Operand op = create_operand(address_mode, operands_strings[i]);
-			operands[i] = op;
+		}
+		else{
+			address_mode=0;
 		}
 
+		Operand op = create_operand(address_mode, operands_strings[i]);
+		operands[i] = op;
+	}
 
-	} else {
+	if (row_state & IS_COMMAND) {
+
+	} else if(row_state & IS_DATA_COMMAND)
+	{
 		/* is data */
 
 	}
 
 	/* calc row/command length */
-			row_length = get_row_length(command, operands, number_of_operands);
+	row_length = get_row_length(command, operands, number_of_operands);
 
 	row = create_row(line_number, row_length, row_state, 0, operands, command,
 			(row_state & IS_LABELED) ? segments[0] : "", 0, segments);

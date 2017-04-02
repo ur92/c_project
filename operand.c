@@ -3,6 +3,8 @@
 #include "operand.h"
 #include "helper.h"
 #include "error.h"
+#include "row.h"
+#include "operand_def.h"
 
 Operand create_operand(AddressingMode address_mode, char *value) {
 	Operand this = (Operand) malloc(sizeof(struct operand));
@@ -54,7 +56,6 @@ int split_operands(char splitted[OPERANDS_MAX][LINE_MAX], char *segment) {
 
 int get_row_length(RowState state, Command command,
 		Operand operands[OPERANDS_MAX], int number_of_operands) {
-	//TODO: string, data, reg
 	int counter;
 	if (state & IS_COMMAND) {
 		counter = number_of_operands;
