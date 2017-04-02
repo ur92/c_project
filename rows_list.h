@@ -15,4 +15,6 @@ Row insert_row(RowsList list, Row prev, Row new_row);
 
 Row push_row(RowsList list, Row new_row);
 
+RowsList concat_lists(RowsList list1, RowsList list2)
+
 #endif

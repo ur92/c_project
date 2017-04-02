@@ -5,7 +5,7 @@
 #include "symbol.h"
 #include "def.h"
 
-Symbol create_symbol(char * label, int address, bool is_external, bool is_command){
+Symbol create_symbol(char * label, int address, bool is_external, bool is_entry, bool is_command){
     Symbol this= (Symbol)malloc(sizeof(struct symbol));
     if(this){
     	if(strchr(label, LABEL_CHAR)){
@@ -14,6 +14,7 @@ Symbol create_symbol(char * label, int address, bool is_external, bool is_comman
         this->label = strdup(label);
         this->address = address;
         this->is_external = is_external;
+        this->is_entry = is_entry;
         this->is_command = is_command;
         this->next = NULL ;
     }

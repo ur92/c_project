@@ -7,7 +7,7 @@
 #include "file_reader.h"
 #include "rows_list.h"
 #include "symbols_list.h"
-#include "parser.h"
+#include "first_scan.h"
 #include "memory.h"
 #include "command.h"
 
@@ -25,7 +25,8 @@ int main(int argc, char **argv) {
 		char lines[MEMORY_MAX][LINE_MAX];
 		int number_of_lines = read_file(lines, "./ps.as");
 		if (number_of_lines > -1) {
-			parse_lines(mem, lines, number_of_lines);
+			first_scan(mem, lines, number_of_lines);
+			second_scan(mem);
 		}
 
 	}

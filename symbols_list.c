@@ -12,6 +12,8 @@ SymbolsList init_symbols_list() {
 }
 
 Symbol insert_symbol(SymbolsList list, Symbol prev, Symbol new_symbol) {
+	Symbol prev_decleration;
+
 	if (!is_exist(list, new_symbol->label)) {
 		/*if the list is empty*/
 		if (list->head == NULL) {
@@ -27,8 +29,16 @@ Symbol insert_symbol(SymbolsList list, Symbol prev, Symbol new_symbol) {
 			list->current = list->current->next;
 		}
 		return new_symbol;
-	} else
-		return NULL;
+	} else {
+		prev_decleration = symbol_search(list, new_symbol->label);
+		if (prev_decleration->is_entry) {
+			/*if the previous decloration was entry, merge the symbols*/
+			prev_decleration->address = new_symbol->address;
+			prev_decleration->is_command = new_symbol->is_command;
+		} else {
+			return NULL;
+		}
+	}
 }
 
 Symbol push_symbol(SymbolsList list, Symbol new_symbol) {

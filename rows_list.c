@@ -5,9 +5,6 @@
 #include "rows_list.h"
 #include "row.h"
 
-
-
-
 RowsList init_rows_list(){
     RowsList this= (RowsList)malloc(sizeof(struct rowsList));
     this->head = this->current = NULL;
@@ -34,4 +31,12 @@ Row insert_row(RowsList list, Row prev, Row new_row){
 
 Row push_row(RowsList list, Row new_row){
     return insert_row(list, list->current, new_row);
+}
+
+RowsList concat_lists(RowsList list1, RowsList list2){
+	RowsList unified_list = init_rows_list();
+	unified_list->head = list1->head;
+	list1->current= list2->head;
+	unified_list->current = list2->current;
+	return unified_list;
 }
