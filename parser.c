@@ -12,6 +12,7 @@
 #include "memory.h"
 #include "error.h"
 #include "row.h"
+#include "operand.h"
 
 int segmentize_line(char segments[SEGMENTS_MAX][LINE_MAX], char *line) {
 	/*char segments[SEGMENTS_MAX][LINE_MAX];*/
@@ -21,7 +22,7 @@ int segmentize_line(char segments[SEGMENTS_MAX][LINE_MAX], char *line) {
 	bool with_label = false;
 
 	/*trim spaces*/
-	while (isspace(line[i]) && i < length)
+	while ((isspace(line[i]) || !isgraph(line[i])) && i < length)
 		i++;
 
 	/*empty line*/
@@ -91,20 +92,54 @@ int segmentize_line(char segments[SEGMENTS_MAX][LINE_MAX], char *line) {
 void parse_lines(Memory mem, char lines[MEMORY_MAX][LINE_MAX],
 		int number_of_lines) {
 	int line_number;
+	Symbol symbol;
+	DataCommandName type;
 
 	for (line_number = 0; line_number < number_of_lines; line_number++) {
 		Row row = parse_line(lines[line_number], line_number);
 
-		if (row->is_command) {
-			/*add to comm lisd*/
-		} else {
-			/*add to data list*/
+		if (row) {
+			if (row->row_state & IS_DATA_COMMAND) {
+				if (row->row_state & IS_LABELED) {
+					/* push symbol*/
+					symbol = create_symbol(row->label, mem->dc, DATA);
+					if (!push_symbol(mem->s_list, symbol)) {
+						print_error(SYMBOL_ALREADY_EXIST, line_number);
+					}
+				}
+				mem->dc += row->length;
+				push_row(mem->d_list, row);
+			}
+
+			if (row->row_state & IS_COMMAND) {
+				if (row->row_state & IS_LABELED) {
+					/* push symbol*/
+					symbol = create_symbol(row->label, mem->ic, 0);
+					if (!push_symbol(mem->s_list, symbol)) {
+						print_error(SYMBOL_ALREADY_EXIST, line_number);
+					}
+				}
+				/*add to commands list*/
+				push_row(mem->c_list, row);
+				mem->ic += row->length;
+			}
+
+			if (row->row_state & IS_ENT_EXT_COMMAND) {
+				continue;
+
+				/*type = (row->command == d_commands[EXTERN]) ? EXTERN : ENTRY;
+				 if (type == EXTERN)
+				 symbol = create_symbol(row->operands[0]->value, 0, type);
+				 else {
+				 symbol = create_symbol(row->operands[0]->value, 0, type);
+				 }
+				 if (!push_symbol(mem->s_list, symbol)) {
+				 print_error(SYMBOL_ALREADY_EXIST, line_number);
+				 }*/
+			}
+
 		}
 
-		if (row->is_labeled) {
-			/* push symbol*/
-
-		}
 	}
 }
 
@@ -120,64 +155,66 @@ Row parse_line(char *line, int line_number) {
 	Command command;
 
 	number_of_segments = segmentize_line(segments, line);
+	if (number_of_segments) {
+		row_state = get_row_state(segments);
 
-	row_state = get_row_state(segments);
+		/*if (row_state & IS_LABELED) {
 
-	if (row_state & IS_LABELED) {
+		 }*/
 
-	}
+		/* parse operands */
+		number_of_operands = split_operands(operands_strings,
+				segments[row_state & IS_LABELED ? 2 : 1]);
 
-	/* parse operands */
-	number_of_operands = split_operands(operands_strings,
-			segments[row_state & IS_LABELED ? 2 : 1]);
+		/* get command */
+		command = get_command(row_state,
+				segments[(row_state & IS_LABELED) ? 1 : 0]);
 
-	/* get command */
-	command = get_command(row_state,
-			segments[(row_state & IS_LABELED) ? 1 : 0]);
-
-	/*get opernads*/
-	for (i = 0; i < number_of_operands; i++) {
-		if (row_state & IS_COMMAND) {
-			/* get operand addressing mode */
-			address_mode = get_addressing_mode(operands_strings[i]);
-			if (address_mode == -1) {
-				print_error(INVALID_ADDRESSING_MODE, line_number);
-				address_mode = IMMIDIATE;
+		/*get opernads*/
+		for (i = 0; i < number_of_operands; i++) {
+			if (row_state & IS_COMMAND) {
+				/* get operand addressing mode */
+				address_mode = get_addressing_mode(operands_strings[i]);
+				if (address_mode == -1) {
+					print_error(INVALID_ADDRESSING_MODE, line_number);
+					address_mode = IMMIDIATE;
+				}
+			} else {
+				address_mode = 0;
 			}
+
+			Operand op = create_operand(address_mode, operands_strings[i]);
+			operands[i] = op;
 		}
-		else{
-			address_mode=0;
+
+		if (row_state & IS_COMMAND) {
+
+		} else if (row_state & IS_DATA_COMMAND) {
+			/* is data */
+
 		}
 
-		Operand op = create_operand(address_mode, operands_strings[i]);
-		operands[i] = op;
-	}
+		/* calc row/command length */
+		row_length = get_row_length(row_state, command, operands,
+				number_of_operands);
 
-	if (row_state & IS_COMMAND) {
+		row = create_row(line_number, row_length, number_of_operands, row_state,
+				0, operands, command,
+				(row_state & IS_LABELED) ? segments[0] : "", 0, segments);
 
-	} else if(row_state & IS_DATA_COMMAND)
-	{
-		/* is data */
-
-	}
-
-	/* calc row/command length */
-	row_length = get_row_length(command, operands, number_of_operands);
-
-	row = create_row(line_number, row_length, row_state, 0, operands, command,
-			(row_state & IS_LABELED) ? segments[0] : "", 0, segments);
-
-	return row;
+		return row;
+	} else
+		return NULL;
 }
 
-int get_row_state( segments) {
+int get_row_state(char segments[SEGMENTS_MAX][LINE_MAX]) {
 
 	int is_labeled, is_command, is_data_command, is_ent_ext_command;
 
 	is_labeled = is_row_labeled(segments[0]);
 	is_command = is_row_command(segments[is_labeled ? 1 : 0]);
-	is_data_command = is_data_command(segments[is_labeled ? 1 : 0]);
-	is_ent_ext_command = is_ent_ext_command(segments[is_labeled ? 1 : 0]);
+	is_data_command = is_row_data_command(segments[is_labeled ? 1 : 0]);
+	is_ent_ext_command = is_row_ent_ext_command(segments[is_labeled ? 1 : 0]);
 
 	return (is_labeled | is_command | is_data_command | is_ent_ext_command);
 }

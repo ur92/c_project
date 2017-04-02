@@ -1,19 +1,44 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
-char * str_dup(char *source){
-    char * dest = malloc(sizeof(char) * strlen(source));
-    strcpy(dest, source);
-
-    return dest;
+char *strdup(const char *s) {
+	char *d = malloc(strlen(s) + 1);
+	if (d == NULL)
+		return NULL;
+	strcpy(d, s);
+	return d;
 }
 
-int strcicmp(char const *a, char const *b)
-{
-    for (;; a++, b++) {
-        int d = tolower(*a) - tolower(*b);
-        if (d != 0 || !*a)
-            return d;
-    }
+char * strsep(char **stringp, const char *delim){
+	char *s;
+	const char *spanp;
+	int c, sc;
+	char *tok;
+
+	if ((s = *stringp) == NULL)
+		return (NULL);
+	for (tok = s;;) {
+		c = *s++;
+		spanp = delim;
+		do {
+			if ((sc = *spanp++) == c) {
+				if (c == 0)
+					s = NULL;
+				else
+					s[-1] = 0;
+				*stringp = s;
+				return (tok);
+			}
+		} while (sc != 0);
+	}
+}
+
+int strcicmp(char const *a, char const *b) {
+	for (;; a++, b++) {
+		int d = tolower(*a) - tolower(*b);
+		if (d != 0 || !*a)
+			return d;
+	}
 }

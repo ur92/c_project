@@ -6,25 +6,17 @@
 #include <string.h>
 #include <stdbool.h>
 #include "def.h"
-#include "operand_def.h"
-/*#include "operand.h"*/
 #include "command.h"
-
-
-
-typedef enum rowState{
-	IS_LABELED = 1<<0,
-	IS_COMMAND = 1<<1,
-	IS_DATA_COMMAND = 1<<2,
-	IS_ENT_EXT_COMMAND = 1<<3
-} RowState;
+#include "operand_def.h"
+#include "row_def.h"
 
 typedef struct row {
 	int line_number;
 	int length;
 	int row_state;
 	int address;
-	Operand operands[OPERANDS_MAX];
+	int number_of_operands;
+	Operand operands[DATA_OPERANDS_MAX];
 	Command command;
 	char *label;
 	int binary;
@@ -33,7 +25,7 @@ typedef struct row {
 	struct row *next;
 }* Row;
 
-Row create_row(int line_number, int length,int row_state, int address, Operand operands[OPERANDS_MAX],
+Row create_row(int line_number, int length,int number_of_operands, RowState row_state, int address, Operand operands[OPERANDS_MAX],
 		Command command, char *label, int binary, char segments[SEGMENTS_MAX][LINE_MAX]);
 
 #endif

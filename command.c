@@ -3,10 +3,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "row.h"
+
 #include "helper.h"
 #include "def.h"
-
+#include "row_def.h"
 #include "command.h"
 
 
@@ -23,7 +23,7 @@ int is_row_data_command(char *command_name) {
 }
 
 
-int is_ent_ext_command(char *command_name) {
+int is_row_ent_ext_command(char *command_name) {
 	Command comm = get_d_command(command_name);
 	bool is_ent_ext;
 	is_ent_ext = ( comm== d_commands[EXTERN]|| comm== d_commands[ENTRY]);

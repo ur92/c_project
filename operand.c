@@ -10,7 +10,7 @@ Operand create_operand(AddressingMode address_mode, char *value) {
 	Operand this = (Operand) malloc(sizeof(struct operand));
 	if (this) {
 		this->address_mode = address_mode;
-		this->value = str_dup(value);
+		this->value = strdup(value);
 	}
 	return this;
 }
@@ -40,23 +40,23 @@ AddressingMode get_addressing_mode(char *operand) {
 	return -1;
 }
 
-int split_operands(char splitted[OPERANDS_MAX][LINE_MAX], char *segment) {
-	char *token, *string, *tofree;
+
+int split_operands(char splitted[DATA_OPERANDS_MAX][LINE_MAX], char *segment) {
+	char *token, *string;
 	int counter = 0;
-	tofree = string = strdup(segment);
+	string = strdup(segment);
 
 	while ((token = strsep(&string, ",")) != NULL) {
 		strcpy(splitted[counter], token);
 		counter++;
 	}
 
-	free(tofree);
 	return counter;
 }
 
 int get_row_length(RowState state, Command command,
 		Operand operands[OPERANDS_MAX], int number_of_operands) {
-	int counter;
+	int counter=0;
 	if (state & IS_COMMAND) {
 		counter = number_of_operands;
 
@@ -64,13 +64,15 @@ int get_row_length(RowState state, Command command,
 				&& operands[1]->address_mode == DIRECT_REGISTER) {
 			counter = 1;
 		}
+
+		counter++;
 	}
 	else if(state & IS_DATA_COMMAND){
 		if(command==d_commands[DATA]){
 			counter = number_of_operands;
 		}
 		else if(command==d_commands[STRING]){
-			counter = strlen(operands[0])-2;
+			counter = strlen(operands[0]->value)-2;
 		}
 	}
 

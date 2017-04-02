@@ -2,18 +2,20 @@
 #include <stdlib.h>
 #include "helper.h"
 #include "symbol.h"
+#include "def.h"
 
-Symbol create_symbol(char * label, int address){
+Symbol create_symbol(char * label, int address, DataCommandName type){
     Symbol this= (Symbol)malloc(sizeof(struct symbol));
-    if(!this){
-        this->label = str_dup(label);
+    if(this){
+    	if(strchr(label, LABEL_CHAR)){
+    		label[strlen(label)-1]='\0';
+    	}
+        this->label = strdup(label);
         this->address = address;
+        this->type = type;
         this->next = NULL ;
     }
 
     return this;
 }
 
-/*Symbol add_symbol(Symbol prev){
-
-}*/

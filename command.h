@@ -5,9 +5,11 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "def.h"
-
-
+/*#include "row.h"*/
+#include "operand_def.h"
+#include "row_def.h"
 
 typedef enum commandName {
 	MOV=0,
@@ -45,8 +47,12 @@ Command i_commands[I_COMMANDS_COUNTER];
 Command d_commands[D_COMMANDS_COUNTER];
 
 int is_row_command(char *command_name);
+int is_row_data_command(char *command_name);
+int is_row_ent_ext_command(char *command_name);
+
 Command create_command(int max_operands,
 		AddressingMode possible_addressing_modes[OPERANDS_MAX], char *name);
+Command get_command(RowState state, char *command_name);
 Command get_i_command(char *command_name);
 Command get_d_command(char *command_name);
 void init_commands();

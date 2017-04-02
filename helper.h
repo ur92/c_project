@@ -1,7 +1,8 @@
 #ifndef HELPER_H
 #define HELPER_H
 
-char * str_dup(char *);
 int strcicmp(char const *a, char const *b);
+char *strdup(const char *s);
+char *strsep(char **stringp, const char *delim);
 
 #endif

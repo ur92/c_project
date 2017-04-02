@@ -12,20 +12,23 @@ SymbolsList init_symbols_list() {
 }
 
 Symbol insert_symbol(SymbolsList list, Symbol prev, Symbol new_symbol) {
-	/*if the list is empty*/
-	if (list->head == NULL) {
-		list->head = list->current = new_symbol;
-	} else {
-		/*insert the new symbol*/
-		Symbol tmp = prev->next;
-		prev->next = new_symbol;
-		new_symbol->next = tmp;
-	}
-	/*update the current*/
-	if (list->current->next != NULL) {
-		list->current = list->current->next;
-	}
-	return new_symbol;
+	if (!is_exist(list, new_symbol->label)) {
+		/*if the list is empty*/
+		if (list->head == NULL) {
+			list->head = list->current = new_symbol;
+		} else {
+			/*insert the new symbol*/
+			Symbol tmp = prev->next;
+			prev->next = new_symbol;
+			new_symbol->next = tmp;
+		}
+		/*update the current*/
+		if (list->current->next != NULL) {
+			list->current = list->current->next;
+		}
+		return new_symbol;
+	} else
+		return NULL;
 }
 
 Symbol push_symbol(SymbolsList list, Symbol new_symbol) {
