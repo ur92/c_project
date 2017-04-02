@@ -5,21 +5,26 @@
 #include "helper.h"
 #include "serialization.h"
 
-char *serialize_command(Row row) {
-	char binary[WORD_LENGTH] = "000000000000000";
+char *serialize_command(char binary[WORD_LENGTH], Row row) {
+	int i;
+	binary = EMPTY_WORD;
 	set_unused_bits(binary);
 	set_aer_bits(binary, ABSOLUTE);
 	set_opcode_bits(binary, row);
 
+	for (i = 0; i < row->number_of_operands; i++) {
+		set_address_mode_bits(binary, row->operands, i);
+	}
+
 	return binary;
 }
 
-char *serialize_operand(Row row, Operand op) {
-	if (row->command == d_commands[DATA]) {
-
-	} else if (row->command == d_commands[STRING]) {
+char *serialize_operand(char binary[WORD_LENGTH], Row row, Operand op) {
+	binary = EMPTY_WORD;
+	if (row->row_state & IS_COMMAND) {
 
 	}
+	return binary;
 }
 
 void set_unused_bits(char binary[WORD_LENGTH]) {
@@ -37,11 +42,44 @@ void set_opcode_bits(char binary[WORD_LENGTH], Row row) {
 	binary[9] = b_opcode[3];
 }
 
+void set_address_mode_bits(char binary[WORD_LENGTH],
+		Operand operands[OPERANDS_MAX], int operand_index) {
+	char l = '0', r = '0';
+
+	switch (operands[operand_index]->address_mode) {
+	case DIRECT:
+		r = '1';
+		l = '0';
+		break;
+	case DIRECT_OFFSET:
+		r = '0';
+		l = '1';
+		break;
+	case DIRECT_REGISTER:
+		r = '1';
+		l = '1';
+		break;
+	case IMMIDIATE:
+		r = '0';
+		l = '0';
+		break;
+	}
+	if (operand_index == 0) {
+		binary[2] = r;
+		binary[3] = l;
+	} else {
+		binary[4] = r;
+		binary[5] = l;
+	}
+}
+
 void set_aer_bits(char binary[WORD_LENGTH], AER aer) {
 	binary[0] = '0';
 	binary[1] = '0';
 
 	switch (aer) {
+	case 0:
+		break;
 	case 1:
 		binary[0] = '1';
 		break;

@@ -4,9 +4,9 @@
 #include <stdio.h>
 #include "row.h"
 
-char * serialize_command(Row row);
+char * serialize_command(char binary[WORD_LENGTH], Row row);
 
-char * serialize_data(Row row);
+char *serialize_operand(char binary[WORD_LENGTH], Row row, Operand op);
 
 void set_unused_bits(char binary[WORD_LENGTH]);
 void set_opcode_bits(char binary[WORD_LENGTH], Row row);

@@ -64,11 +64,11 @@ Symbol symbol_search(SymbolsList list, char *label) {
 	return NULL;
 }
 
-void update_data_symbols_address(SymbolsList list,int ic){
+void update_data_symbols_address(SymbolsList list, int ic) {
 	Symbol this = list->head;
 	while (this) {
-		if (this->is_command) {
-			this->address+=ic;
+		if (!this->is_command && !this->is_external) {
+			this->address += ic;
 		}
 		this = this->next;
 	}

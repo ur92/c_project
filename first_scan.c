@@ -101,7 +101,7 @@ void first_scan(Memory mem, char lines[MEMORY_MAX][LINE_MAX],
 			if (row->row_state & IS_DATA_COMMAND) {
 				if (row->row_state & IS_LABELED) {
 					/* push symbol*/
-					symbol = create_symbol(row->label, mem->dc, false, false,
+					symbol = create_symbol(row->label, BASE_MEM_ADDRESS+mem->dc, false, false,
 							false);
 					if (!push_symbol(mem->s_list, symbol)) {
 						print_error(SYMBOL_ALREADY_EXIST, line_number);
@@ -117,7 +117,7 @@ void first_scan(Memory mem, char lines[MEMORY_MAX][LINE_MAX],
 			if (row->row_state & IS_ENT_EXT_COMMAND) {
 				if (row->command == d_commands[EXTERN]) {
 					/*add the symbol to external symbol list*/
-					symbol = create_symbol(row->operands[0]->value, mem->ic,
+					symbol = create_symbol(row->operands[0]->value, BASE_MEM_ADDRESS+mem->ic,
 							true, false, false);
 					push_symbol(mem->es_list, symbol);
 				} else {
@@ -131,7 +131,7 @@ void first_scan(Memory mem, char lines[MEMORY_MAX][LINE_MAX],
 			if (row->row_state & IS_COMMAND) {
 				if (row->row_state & IS_LABELED) {
 					/* push symbol*/
-					symbol = create_symbol(row->label, mem->ic, false, false,
+					symbol = create_symbol(row->label, BASE_MEM_ADDRESS+mem->ic, false, false,
 							true);
 					if (!push_symbol(mem->s_list, symbol)) {
 						print_error(SYMBOL_ALREADY_EXIST, line_number);
@@ -210,7 +210,7 @@ Row parse_line(char *line, int line_number) {
 
 		row = create_row(line_number, row_length, number_of_operands, row_state,
 				0, operands, command,
-				(row_state & IS_LABELED) ? segments[0] : "", 0, segments);
+				(row_state & IS_LABELED) ? segments[0] : "", EMPTY_WORD, segments);
 
 		return row;
 	} else
