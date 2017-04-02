@@ -13,8 +13,11 @@
 
 int main(int argc, char **argv) {
 
-	init_commands();
 	int i;
+
+
+	init_commands();
+
 	/*handle each input file*/
 	for (i = 0; i < argc; i++) {
 		Memory mem = init_memory();

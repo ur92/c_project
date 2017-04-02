@@ -27,32 +27,27 @@ typedef enum commandName {
 	STOP
 } commandName;
 
+typedef enum dataCommandName {
+	DATA=0,
+	STRING,
+	ENTRY,
+	EXTERN
+} DataCommandName;
+
 typedef struct command {
 	char name[COMMAND_MAX_LENGTH];
 	int max_operands;
 	AddressingMode possible_addressing_modes[OPERANDS_MAX];
 } *Command;
 
-Command commands[COMMANDS_COUNTER];
+Command i_commands[I_COMMANDS_COUNTER];
+Command d_commands[D_COMMANDS_COUNTER];
 
 bool is_row_command(char *command_name);
 Command create_command(int max_operands,
 		AddressingMode possible_addressing_modes[OPERANDS_MAX], char *name);
-Command get_command(char *command_name);
-AddressingMode get_addressing_mode(char *operand);
-int get_row_length(AddressingMode operands_am[OPERANDS_MAX]);
+Command get_i_command(char *command_name);
+Command get_d_command(char *command_name);
 void init_commands();
-
-
-
-
-
-
-
-/*
- char commands[COMMANDS_COUNTER][COMMAND_MAX_LENGTH] = { "mov", "cmp", "add",
- "sub", "not", "clr", "lea", "inc", "dec", "jmp", "bne", "red",
- "prn", "jsr", "rts", "stop" };
- */
 
 #endif

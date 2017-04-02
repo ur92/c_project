@@ -28,6 +28,7 @@ AddressingMode get_addressing_mode(char *operand) {
 				if (should_be_odd && should_be_even)
 					return DIRECT_OFFSET;
 			}
+			return -1;
 		} else
 			return DIRECT_REGISTER;
 	}
@@ -51,19 +52,26 @@ int split_operands(char splitted[OPERANDS_MAX][LINE_MAX], char *segment) {
 	return counter;
 }
 
-int get_row_length(Operand operands[OPERANDS_MAX]) {
-	int i, counter =0;
-	bool
-	for(i=0; i<OPERANDS_MAX;i++){
-	switch(operands[i]->address_mode){
-	case IMMIDIATE:
-		break;
-	case DIRECT:
-			break;
-	case DIRECT_OFFSET:
-			break;
-	case DIRECT_REGISTER:
-			break;
+int get_row_length(RowState state, Command command,
+		Operand operands[OPERANDS_MAX], int number_of_operands) {
+	//TODO: string, data, reg
+	int counter;
+	if (state & IS_COMMAND) {
+		counter = number_of_operands;
+
+		if (counter == 2 && operands[0]->address_mode == DIRECT_REGISTER
+				&& operands[1]->address_mode == DIRECT_REGISTER) {
+			counter = 1;
+		}
 	}
+	else if(state & IS_DATA_COMMAND){
+		if(command==d_commands[DATA]){
+			counter = number_of_operands;
+		}
+		else if(command==d_commands[STRING]){
+			counter = strlen(operands[0])-2;
+		}
 	}
+
+	return counter;
 }

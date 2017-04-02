@@ -108,26 +108,34 @@ void parse_lines(Memory mem, char lines[MEMORY_MAX][LINE_MAX],
 }
 
 Row parse_line(char *line, int line_number) {
-	bool is_labeled, is_command, command_segment;
-	char segments[SEGMENTS_MAX][LINE_MAX], operands_strings[OPERANDS_MAX][LINE_MAX];
+
+	char segments[SEGMENTS_MAX][LINE_MAX],
+			operands_strings[OPERANDS_MAX][LINE_MAX];
 	int i, number_of_segments, number_of_operands, row_length;
+	RowState row_state;
 	Row row;
 	AddressingMode address_mode;
 	Operand operands[OPERANDS_MAX];
+	Command command;
 
 	number_of_segments = segmentize_line(segments, line);
 
-	is_labeled = is_row_labeled(segments);
-	is_command = is_row_command(segments[is_labeled ? 1 : 0]);
+	row_state = get_row_state(segments);
 
-	if (is_labeled) {
+	if (row_state & IS_LABELED) {
 
 	}
 
-	if (is_command) {
-		/* parse operands */
-		number_of_operands = split_operands(operands_strings,
-				segments[is_labeled ? 2 : 1]);
+	/* parse operands */
+	number_of_operands = split_operands(operands_strings,
+			segments[row_state & IS_LABELED ? 2 : 1]);
+
+	/* get command */
+	command = get_command(row_state,
+			segments[(row_state & IS_LABELED) ? 1 : 0]);
+
+	if (row_state & IS_COMMAND) {
+
 		for (i = 0; i < number_of_operands; i++) {
 			/* get operand addressing mode */
 			address_mode = get_addressing_mode(operands_strings[i]);
@@ -140,28 +148,39 @@ Row parse_line(char *line, int line_number) {
 			operands[i] = op;
 		}
 
-		/* calc row/command length */
-		row_length = get_row_length(operands);
+
+	} else {
+		/* is data */
+
 	}
 
-	row = create_row(line_number, row_length, 0, is_labeled, is_command,
-			operands, segments[is_labeled ? 1 : 0],
-			is_labeled ? segments[0] : "", 0, segments);
+	/* calc row/command length */
+			row_length = get_row_length(command, operands, number_of_operands);
+
+	row = create_row(line_number, row_length, row_state, 0, operands, command,
+			(row_state & IS_LABELED) ? segments[0] : "", 0, segments);
 
 	return row;
 }
 
-bool is_row_labeled(char segments[SEGMENTS_MAX][LINE_MAX]) {
-	if (strlen(segments[0]) > 0) {
-		if (strchr(segments[0], LABEL_CHAR)) {
-			return true;
-		}
-	}
-	return false;
+int get_row_state( segments) {
+
+	int is_labeled, is_command, is_data_command, is_ent_ext_command;
+
+	is_labeled = is_row_labeled(segments[0]);
+	is_command = is_row_command(segments[is_labeled ? 1 : 0]);
+	is_data_command = is_data_command(segments[is_labeled ? 1 : 0]);
+	is_ent_ext_command = is_ent_ext_command(segments[is_labeled ? 1 : 0]);
+
+	return (is_labeled | is_command | is_data_command | is_ent_ext_command);
 }
 
-int find_row_length(char segments[SEGMENTS_MAX][LINE_MAX], bool is_labeled) {
-	int operand_segment = is_labeled ? 2 : 1;
-
+bool is_row_labeled(char *segment) {
+	if (strlen(segment) > 0) {
+		if (strchr(segment, LABEL_CHAR)) {
+			return IS_LABELED;
+		}
+	}
+	return 0;
 }
 

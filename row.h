@@ -9,14 +9,20 @@
 #include "command.h"
 /*#include "operand.h"*/
 
+typedef enum rowState{
+	IS_LABELED = 1<<0,
+	IS_COMMAND = 1<<1,
+	IS_DATA_COMMAND = 1<<2,
+	IS_ENT_EXT_COMMAND = 1<<3
+} RowState;
+
 typedef struct row {
 	int line_number;
 	int length;
+	int row_state;
 	int address;
-	bool is_labeled;
-	bool is_command;
 	Operand operands[OPERANDS_MAX];
-	char command[5];
+	Command command;
 	char *label;
 	int binary;
 	char segments[SEGMENTS_MAX][LINE_MAX];
@@ -24,8 +30,7 @@ typedef struct row {
 	struct row *next;
 }* Row;
 
-Row create_row(int line_number, int length, int address, bool is_labeled,
-		bool is_command, Operand operands[OPERANDS_MAX],
-		char *command, char *label, int binary, char segments[SEGMENTS_MAX][LINE_MAX]);
+Row create_row(int line_number, int length,int row_state, int address, Operand operands[OPERANDS_MAX],
+		Command command, char *label, int binary, char segments[SEGMENTS_MAX][LINE_MAX]);
 
 #endif
