@@ -54,17 +54,17 @@ char *set_immidiate(char binary[WORD_LENGTH], Operand op) {
 	char immidiate[INT_BUF_SIZE];
 	char *tmp = strdup(op->value);
 	int num, i;
-	bool data= true;
+	bool data = true;
 
-	if(tmp[0]=='#'){
+	if (tmp[0] == '#') {
 		tmp[0] = ' ';
-		data=false;
+		data = false;
 	}
 	num = strtol(tmp, NULL, 10);
 	int_to_binary(num, immidiate);
 
-	for (i = data?0:2; i < WORD_LENGTH - 1; i++) {
-		binary[i] = immidiate[INT_BUF_SIZE - i-(data?2:0)];
+	for (i = data ? 0 : 2; i < WORD_LENGTH - 1; i++) {
+		binary[i] = immidiate[INT_BUF_SIZE - i - (data ? 2 : 0)];
 	}
 
 	return binary;
@@ -119,7 +119,7 @@ char *serialize_operand(SymbolsList list, Row row, int operand_num) {
 	Operand op = row->operands[operand_num];
 
 	switch (op->address_mode) {
-	case 0:
+	case NO_ADDRESS:
 	case IMMIDIATE:
 		set_immidiate(mirror_str, op);
 		break;
@@ -182,6 +182,8 @@ char * set_address_mode_bits(char binary[WORD_LENGTH],
 	case IMMIDIATE:
 		binary[r] = '0';
 		binary[l] = '0';
+		break;
+	case NO_ADDRESS:
 		break;
 	}
 

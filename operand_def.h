@@ -7,11 +7,12 @@
 #define _123 _12&DIRECT_REGISTER
 #define _0123 IMMIDIATE&_123
 
-typedef enum aer{
+typedef enum aer {
 	ABSOLUTE = 0, EXTERNAL = 1, RELATIVE = 2
 } AER;
 
-typedef enum addressingMode{
+typedef enum addressingMode {
+	NO_ADDRESS = 0,
 	IMMIDIATE = 1 << 0,
 	DIRECT = 1 << 1,
 	DIRECT_OFFSET = 1 << 2,
@@ -24,8 +25,5 @@ typedef struct operand {
 	char *value;
 	char *binary;
 }* Operand;
-
-
-
 
 #endif

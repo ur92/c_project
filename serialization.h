@@ -6,6 +6,7 @@
 #include "symbols_list.h"
 
 char *serialize_command(Row row);
+char *serialize_operand_one_row(Row row);
 
 char *serialize_operand(SymbolsList list, Row row, int operand_num);
 char *set_immidiate(char binary[WORD_LENGTH], Operand op);

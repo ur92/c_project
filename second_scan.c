@@ -8,12 +8,14 @@
 
 void second_scan(Memory mem) {
 
+	RowsList unified_list;
+
 	/*update symbols address*/
 	update_data_symbols_address(mem->s_list, mem->ic);
 
 	update_data_commands_address(mem->d_list, mem->ic);
 	/*concat the lists*/
-	RowsList unified_list = concat_lists(mem->c_list, mem->d_list);
+	unified_list = concat_lists(mem->c_list, mem->d_list);
 
 	/*serialize command operands (label/entry/extern)*/
 	serialize_command_operands(unified_list, mem->s_list);
@@ -27,7 +29,7 @@ void serialize_command_operands(RowsList list, SymbolsList s_list) {
 		if (row->row_state & IS_COMMAND) {
 			/*double DIRECT_REGISTER => serialize into one line*/
 			if (row->length == row->number_of_operands
-					&& !row->row_state & IS_DATA_COMMAND) {
+					&& !(row->row_state & IS_DATA_COMMAND)) {
 				row->operands[0]->binary = strdup(
 						serialize_operand_one_row(row));
 			} else {

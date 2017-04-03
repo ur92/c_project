@@ -9,24 +9,51 @@
 #include "helper.h"
 
 bool write_ent_file(Memory mem, char *file_name) {
+	FILE * fp;
+	Symbol s;
 
+	fp = create_file(file_name, ".ent");
+	s= mem->s_list->head;
+	while (s) {
+		if (s->is_entry) {
+			fprintf(fp, "%s %04X\r\n", s->label, s->address);
+		}
+		s = s->next;
+	}
+
+	fclose(fp);
+	return true;
 }
 
 bool write_ext_file(Memory mem, char *file_name) {
+	FILE * fp;
+	Symbol s;
 
+	fp = create_file(file_name, ".ext");
+	s= mem->es_list->head;
+	while (s) {
+		fprintf(fp, "%s %04X\r\n", s->label, s->address);
+		s = s->next;
+	}
+
+	fclose(fp);
+
+	return true;
 }
 
 bool write_ob_file(Memory mem, char *file_name) {
 	FILE * fp;
 	int i, code;
+	RowsList unified_list;
+	Row row;
 	fp = create_file(file_name, ".ob");
 
 	/*concat the lists*/
-	RowsList unified_list = concat_lists(mem->c_list, mem->d_list);
+	unified_list = concat_lists(mem->c_list, mem->d_list);
 
 	fprintf(fp, "%X %04X\r\n", mem->ic, mem->dc);
 
-	Row row = unified_list->head;
+	row = unified_list->head;
 	while (row) {
 		if (row->row_state & IS_COMMAND) {
 			code = binary_to_int(row->binary);
@@ -55,6 +82,7 @@ bool write_ob_file(Memory mem, char *file_name) {
 	}
 
 	fclose(fp);
+	return true;
 }
 
 FILE * create_file(char *file_name, char *ext) {
@@ -62,6 +90,6 @@ FILE * create_file(char *file_name, char *ext) {
 	strcpy(path, file_name);
 	strcat(path, ext);
 
-	FILE *fp = fopen(path, "ab+");
+	return fopen(path, "ab+");
 }
 

@@ -124,7 +124,7 @@ void first_scan(Memory mem, char lines[MEMORY_MAX][LINE_MAX],
 					/*add the symbol to entry symbol list*/
 					symbol = create_symbol(row->operands[0]->value, 0, false,
 							true, false);
-					push_symbol(mem->es_list, symbol);
+					push_symbol(mem->s_list, symbol);
 				}
 			}
 

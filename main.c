@@ -7,6 +7,7 @@
 #include "file_reader.h"
 #include "file_writer.h"
 #include "rows_list.h"
+#include "second_scan.h"
 #include "symbols_list.h"
 #include "first_scan.h"
 #include "memory.h"
@@ -14,7 +15,7 @@
 
 int main(int argc, char **argv) {
 
-	int i;
+	int i, number_of_lines;
 	char lines[MEMORY_MAX][LINE_MAX];
 
 	Memory mem;
@@ -26,7 +27,7 @@ int main(int argc, char **argv) {
 	for (i = 1; i < argc; i++) {
 		mem = init_memory();
 
-		int number_of_lines = read_file(lines, argv[i]);
+		number_of_lines = read_file(lines, argv[i]);
 		if (number_of_lines > -1) {
 			first_scan(mem, lines, number_of_lines);
 			second_scan(mem);

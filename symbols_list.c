@@ -39,6 +39,7 @@ Symbol insert_symbol(SymbolsList list, Symbol prev, Symbol new_symbol) {
 			return NULL;
 		}
 	}
+	return new_symbol;
 }
 
 Symbol push_symbol(SymbolsList list, Symbol new_symbol) {
