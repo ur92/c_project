@@ -38,14 +38,15 @@ bool write_ob_file(Memory mem, char *file_name) {
 			}
 		} else if (row->row_state & IS_DATA_COMMAND) {
 			if (row->command == d_commands[DATA]) {
-				for (i = 0; i < row->length - 1; i++) {
+				for (i = 0; i < row->length; i++) {
+
 					code = binary_to_int(row->operands[i]->binary);
-					fprintf(fp, "%X %04X\r\n", row->address + 1 + i, code);
+					fprintf(fp, "%X %04X\r\n", row->address + i, code);
 				}
 			} else if (row->command == d_commands[STRING]) {
-				for (i = 0; i < row->length - 1; i++) {
-					code = binary_to_int(row->operands[i]->value[i]);
-					fprintf(fp, "%X %04X\r\n", row->address + 1 + i, code);
+				for (i = 0; i < row->length; i++) {
+					code = row->operands[0]->value[i];
+					fprintf(fp, "%X %04X\r\n", row->address + i, code);
 				}
 			}
 		}

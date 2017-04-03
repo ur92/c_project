@@ -35,7 +35,7 @@ Row push_row(RowsList list, Row new_row) {
 RowsList concat_lists(RowsList list1, RowsList list2) {
 	RowsList unified_list = init_rows_list();
 	unified_list->head = list1->head;
-	list1->current = list2->head;
+	list1->current->next = list2->head;
 	unified_list->current = list2->current;
 	return unified_list;
 }
