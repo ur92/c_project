@@ -148,8 +148,7 @@ void first_scan(Memory mem, char lines[MEMORY_MAX][LINE_MAX],
 
 		}
 	}
-	update_data_symbols_address(mem->s_list, mem->ic);
-	update_data_commands_address(mem->d_list, mem->ic);
+
 }
 
 Row parse_line(char *line, int line_number) {

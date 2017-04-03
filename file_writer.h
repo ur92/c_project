@@ -11,5 +11,7 @@ bool write_ext_file(Memory mem, char *file_name);
 
 bool write_ob_file(Memory mem, char *file_name);
 
+FILE * create_file(char *file_name, char *ext);
+
 #endif
 

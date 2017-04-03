@@ -5,6 +5,7 @@
 #include "row.h"
 #include "helper.h"
 #include "def.h"
+#include "serialization.h"
 /*#include "operand.h"*/
 
 Row create_row(int line_number, int length, int number_of_operands,

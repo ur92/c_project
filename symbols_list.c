@@ -64,6 +64,15 @@ Symbol symbol_search(SymbolsList list, char *label) {
 	return NULL;
 }
 
+int get_symbol_address(char *value, SymbolsList list){
+	Symbol s = symbol_search(list, value);
+	if(s){
+		return s->address;
+	}
+	else
+		return 0;
+}
+
 void update_data_symbols_address(SymbolsList list, int ic) {
 	Symbol this = list->head;
 	while (this) {

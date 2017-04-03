@@ -22,7 +22,7 @@ typedef struct operand {
 	AddressingMode address_mode;
 	AER aer;
 	char *value;
-	char binary[WORD_LENGTH];
+	char *binary;
 }* Operand;
 
 
