@@ -9,8 +9,7 @@
 
 Row create_row(int line_number, int length, int number_of_operands,
 		RowState row_state, int address, Operand operands[DATA_OPERANDS_MAX],
-		Command command, char *label, char binary[WORD_LENGTH],
-		char segments[SEGMENTS_MAX][LINE_MAX]) {
+		Command command, char *label, char segments[SEGMENTS_MAX][LINE_MAX]) {
 	int i;
 	Row this = (Row) malloc(sizeof(struct row));
 	if (this) {
@@ -21,9 +20,9 @@ Row create_row(int line_number, int length, int number_of_operands,
 		this->row_state = row_state;
 
 		this->command = command;
-		this->label = malloc(strlen(label)+1);
+		this->label = malloc(strlen(label) + 1);
 		strcpy(this->label, label);
-		strcpy(this->binary, binary);
+
 
 		for (i = 0; i < number_of_operands; i++) {
 			this->operands[i] = operands[i];
@@ -32,6 +31,11 @@ Row create_row(int line_number, int length, int number_of_operands,
 		for (i = 0; i < SEGMENTS_MAX; i++) {
 			strcpy(this->segments[i], segments[i]);
 		}
+
+		if(this->row_state&IS_COMMAND)
+			this->binary= strdup(serialize_command(this));
+		else
+			this->binary =strdup(EMPTY_WORD);
 
 		this->next = NULL;
 

@@ -210,7 +210,7 @@ Row parse_line(char *line, int line_number) {
 
 		row = create_row(line_number, row_length, number_of_operands, row_state,
 				0, operands, command,
-				(row_state & IS_LABELED) ? segments[0] : "", EMPTY_WORD, segments);
+				(row_state & IS_LABELED) ? segments[0] : "", segments);
 
 		return row;
 	} else

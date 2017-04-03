@@ -61,3 +61,16 @@ char *int_to_binary(int a, char *buffer) {
 	return buffer;
 }
 
+void reverse(char s[WORD_LENGTH])
+{
+    int length = strlen(s) ;
+    int c, i, j;
+
+    for (i = 0, j = length - 1; i < j; i++, j--)
+    {
+        c = s[i];
+        s[i] = s[j];
+        s[j] = c;
+    }
+}
+

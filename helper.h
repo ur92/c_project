@@ -7,5 +7,6 @@ char *strsep(char **stringp, const char *delim);
 
 long int binary_to_int(char *binary);
 char *int_to_binary(int a, char *buffer);
+void reverse(char s[]);
 
 #endif

@@ -19,13 +19,13 @@ typedef struct row {
 	Operand operands[DATA_OPERANDS_MAX];
 	Command command;
 	char *label;
-	char binary[WORD_LENGTH];
+	char *binary;
 	char segments[SEGMENTS_MAX][LINE_MAX];
 
 	struct row *next;
 }* Row;
 
 Row create_row(int line_number, int length,int number_of_operands, RowState row_state, int address, Operand operands[OPERANDS_MAX],
-		Command command, char *label, char binary[WORD_LENGTH], char segments[SEGMENTS_MAX][LINE_MAX]);
+		Command command, char *label, char segments[SEGMENTS_MAX][LINE_MAX]);
 
 #endif
